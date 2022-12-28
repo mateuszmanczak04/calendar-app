@@ -1,0 +1,101 @@
+.container {
+  background: white;
+  width: 100%;
+  border-radius: 10px;
+  padding: 16px 16px 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .currentDate {
+      font-size: 24px;
+      height: 100%;
+      font-weight: 500;
+    }
+
+    .icons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      height: 100%;
+
+      span {
+        width: 40px;
+        height: 40px;
+        font-size: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s ease;
+
+        &:hover {
+          background: var(--black25);
+        }
+      }
+    }
+  }
+  .calendar {
+    .weeks {
+      li {
+        font-weight: 500;
+      }
+    }
+
+    .days {
+      li {
+        margin-top: 32px;
+        cursor: pointer;
+        z-index: 1;
+
+        &::before {
+          position: absolute;
+          content: '';
+          height: 40px;
+          width: 40px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          z-index: -1;
+        }
+
+        &:hover {
+          &::before {
+            background: var(--black25);
+          }
+        }
+
+        &.inactive {
+          color: #aaa;
+        }
+
+        &.active {
+          color: white;
+          &::before {
+            background: var(--primary);
+          }
+        }
+      }
+    }
+
+    ul {
+      display: flex;
+      list-style: none;
+      flex-wrap: wrap;
+      text-align: center;
+
+      li {
+        position: relative;
+        width: calc(100% / 7);
+      }
+    }
+  }
+}
