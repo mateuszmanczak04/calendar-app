@@ -1,0 +1,10 @@
+.container {
+  flex: 1;
+  overflow-y: scroll;
+  display: flex;
+
+  .days {
+    position: relative;
+    flex: 1;
+  }
+}

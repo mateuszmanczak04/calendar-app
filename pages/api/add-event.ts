@@ -9,12 +9,12 @@ export default async function handler(
     return res.status(400).json({ message: 'Invalid method.' });
   }
 
-  const { title, startTime, endTime } = req.body;
+  const { title, startTime, endTime, color } = req.body;
 
-  if (!title || !startTime || !endTime) {
+  if (!title || !startTime || !endTime || !color) {
     return res
       .status(400)
-      .json({ message: 'Invalid title, startTime or endTime' });
+      .json({ message: 'Invalid title, color, startTime or endTime' });
   }
 
   const db = await connectToDatabase();
@@ -24,6 +24,7 @@ export default async function handler(
       title,
       startTime,
       endTime,
+      color,
     })
   ).insertedId;
 

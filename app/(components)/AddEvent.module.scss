@@ -52,5 +52,33 @@
         opacity: 0.5;
       }
     }
+
+    .colors {
+      width: 100%;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+
+      .row {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+
+        .color {
+          flex: 1;
+          aspect-ratio: 1/1;
+          cursor: pointer;
+          border-radius: 8px;
+          transition: 0.2s ease;
+
+          &.active {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
   }
 }

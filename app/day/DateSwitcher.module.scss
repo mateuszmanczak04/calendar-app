@@ -1,0 +1,33 @@
+.menu {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  border-bottom: 1px solid var(--black50);
+  background: white;
+  z-index: 1;
+
+  button {
+    border: none;
+    outline: none;
+    font-size: 24px;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: 0.2s ease;
+
+    &:hover {
+      background: var(--black10);
+    }
+  }
+
+  p {
+    font-size: 20px;
+  }
+}

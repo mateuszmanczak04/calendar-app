@@ -5,6 +5,7 @@ type Event = {
   startTime: number;
   endTime: number;
   _id: string;
+  color: string;
 };
 
 export const EventsContext = createContext<{
@@ -12,9 +13,7 @@ export const EventsContext = createContext<{
   addEvent: (event: Event) => void;
 }>({
   events: [],
-  addEvent: () => {
-    console.log('Add event');
-  },
+  addEvent: () => {},
 });
 
 type Props = {

@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
+import { DateContextProvider } from '../context/DateContext';
 import { EventsContextProvider } from '../context/EventsContext';
+import { LayoutContextProvider } from '../context/LayoutContext';
 import TopBar from './(components)/TopBar';
 import './globals.css';
 
@@ -17,10 +19,14 @@ export default function RootLayout({ children }: LayoutProps) {
       </head>
       <body>
         <EventsContextProvider>
-          <>
-            <TopBar />
-            {children}
-          </>
+          <LayoutContextProvider>
+            <DateContextProvider>
+              <>
+                <TopBar />
+                {children}
+              </>
+            </DateContextProvider>
+          </LayoutContextProvider>
         </EventsContextProvider>
       </body>
     </html>

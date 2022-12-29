@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import styles from './RightCalendar.module.scss';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import { useDateContext } from '../../context/useDateContext';
 
 const months = [
   'January',
@@ -26,14 +27,9 @@ const months = [
   'December',
 ];
 
-type Props = {
-  currentDate: Date;
-  setCurrentDate: Dispatch<SetStateAction<Date>>;
-};
-
-const RightCalendar = ({ currentDate, setCurrentDate }: Props) => {
-  const daysRef = useRef<HTMLUListElement>(null);
+const RightCalendar = () => {
   const [days, setDays] = useState<JSX.Element[]>([]);
+  const { currentDate, setCurrentDate } = useDateContext();
 
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()
@@ -75,7 +71,8 @@ const RightCalendar = ({ currentDate, setCurrentDate }: Props) => {
           className={styles.inactive}
           onClick={() => {
             setCurrentDate(new Date(year, month, day));
-          }}>
+          }}
+          key={Math.random()}>
           {day}
         </li>
       );
@@ -95,7 +92,8 @@ const RightCalendar = ({ currentDate, setCurrentDate }: Props) => {
           className={styles[isToday]}
           onClick={() => {
             setCurrentDate(new Date(currentYear, currentMonth, i));
-          }}>
+          }}
+          key={Math.random()}>
           {i}
         </li>
       );
@@ -112,7 +110,8 @@ const RightCalendar = ({ currentDate, setCurrentDate }: Props) => {
           className={styles.inactive}
           onClick={() => {
             setCurrentDate(new Date(year, month, day));
-          }}>
+          }}
+          key={Math.random()}>
           {day}
         </li>
       );
@@ -172,9 +171,7 @@ const RightCalendar = ({ currentDate, setCurrentDate }: Props) => {
           <li>Sat</li>
           <li>Sun</li>
         </ul>
-        <ul className={styles.days} ref={daysRef}>
-          {days.map((day) => day)}
-        </ul>
+        <ul className={styles.days}>{days}</ul>
       </div>
     </div>
   );
