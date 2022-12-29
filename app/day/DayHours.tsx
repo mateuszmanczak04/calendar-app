@@ -15,13 +15,21 @@ const DayHours = () => {
   const [transition, setTransition] = useState('0.4s ease');
 
   useEffect(() => {
-    if (currentDate.getDate() === firstDate.getDate()) {
+    const currentDateMidnight = new Date(currentDate);
+    currentDateMidnight.setHours(0, 0, 0, 0);
+
+    const firstDateMidnight = new Date(firstDate);
+    firstDateMidnight.setHours(0, 0, 0, 0);
+
+    if (currentDateMidnight.getTime() === firstDateMidnight.getTime()) {
       return;
     }
 
     if (
-      currentDate.getDate() + 1 !== firstDate.getDate() &&
-      currentDate.getDate() - 1 !== firstDate.getDate()
+      currentDateMidnight.getTime() + 24 * 60 * 60 * 1000 !==
+        firstDateMidnight.getTime() &&
+      currentDateMidnight.getTime() - 24 * 60 * 60 * 1000 !==
+        firstDateMidnight.getTime()
     ) {
       setTransition('0s');
       setFirstDate(currentDate);
@@ -30,10 +38,10 @@ const DayHours = () => {
     }
 
     setTransition('0.4s ease');
-    if (firstDate > currentDate) {
+    if (firstDateMidnight > currentDateMidnight) {
       // go back
       setOrders((prevOrders) => prevOrders.map((o) => o + 1));
-    } else if (firstDate < currentDate) {
+    } else if (firstDateMidnight < currentDateMidnight) {
       // go forward
       setOrders((prevOrders) => prevOrders.map((o) => o - 1));
     }

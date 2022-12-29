@@ -30,13 +30,13 @@ export const DateContextProvider = ({
 
   const getDateBefore = (date: Date) => {
     const dateBefore = new Date();
-    dateBefore.setDate(date.getDate() - 1);
+    dateBefore.setTime(date.getTime() - 24 * 60 * 60 * 1000);
     return dateBefore;
   };
 
   const getDateAfter = (date: Date) => {
     const dateAfter = new Date();
-    dateAfter.setDate(date.getDate() + 1);
+    dateAfter.setTime(date.getTime() + 24 * 60 * 60 * 1000);
     return dateAfter;
   };
 

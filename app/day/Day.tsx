@@ -8,8 +8,6 @@ import DateSwitcher from './DateSwitcher';
 import { useDateContext } from '../../context/useDateContext';
 
 const Day = () => {
-  const { currentDate, setCurrentDate, dayAhead, dayBack } = useDateContext();
-
   return (
     <div className={styles.container}>
       <div className={styles.left}>
