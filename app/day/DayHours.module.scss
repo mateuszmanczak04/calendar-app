@@ -1,6 +1,7 @@
 .container {
   flex: 1;
   overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
 
   .days {
