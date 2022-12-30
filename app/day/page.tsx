@@ -1,12 +1,16 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { getDateSlug } from '../../lib/getDateSlug';
 
 const DayPage = () => {
   const router = useRouter();
-  const slug = getDateSlug(new Date());
-  router.replace(`/day/${slug}`);
+
+  useEffect(() => {
+    const slug = getDateSlug(new Date());
+    router.replace(`/day/${slug}`);
+  }, [router]);
 
   return <div></div>;
 };
