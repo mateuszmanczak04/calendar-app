@@ -8,7 +8,7 @@ const DayPage = () => {
   const slug = getDateSlug(new Date());
   router.replace(`/day/${slug}`);
 
-  return <></>;
+  return <div></div>;
 };
 
 export default DayPage;
