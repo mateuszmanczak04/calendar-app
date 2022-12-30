@@ -1,14 +1,7 @@
 'use client';
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import styles from './RightCalendar.module.scss';
+import React, { useCallback, useEffect, useState } from 'react';
+import styles from './SmallCalendar.module.scss';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useDateContext } from '../../context/useDateContext';
 
@@ -27,7 +20,7 @@ const months = [
   'December',
 ];
 
-const RightCalendar = () => {
+const SmallCalendar = () => {
   const [days, setDays] = useState<JSX.Element[]>([]);
   const { currentDate, setCurrentDate } = useDateContext();
 
@@ -61,22 +54,42 @@ const RightCalendar = () => {
       0
     ).getDate();
 
-    for (let i = firstDayOfMonth - 1; i > 0; i--) {
-      const year = currentMonth === 0 ? currentYear - 1 : currentYear;
-      const month = currentMonth === 0 ? 11 : currentMonth - 1;
-      const day = lastDateOfLastMonth - i + 1;
+    if (firstDayOfMonth !== 0) {
+      for (let i = firstDayOfMonth - 1; i > 0; i--) {
+        const year = currentMonth === 0 ? currentYear - 1 : currentYear;
+        const month = currentMonth === 0 ? 11 : currentMonth - 1;
+        const day = lastDateOfLastMonth - i + 1;
 
-      const liEl = (
-        <li
-          className={styles.inactive}
-          onClick={() => {
-            setCurrentDate(new Date(year, month, day));
-          }}
-          key={Math.random()}>
-          {day}
-        </li>
-      );
-      setDays((prev) => [...prev, liEl]);
+        const liEl = (
+          <li
+            className={styles.inactive}
+            onClick={() => {
+              setCurrentDate(new Date(year, month, day));
+            }}
+            key={Math.random()}>
+            {day}
+          </li>
+        );
+        setDays((prev) => [...prev, liEl]);
+      }
+    } else {
+      for (let i = 6; i > 0; i--) {
+        const year = currentMonth === 0 ? currentYear - 1 : currentYear;
+        const month = currentMonth === 0 ? 11 : currentMonth - 1;
+        const day = lastDateOfLastMonth - i + 1;
+
+        const liEl = (
+          <li
+            className={styles.inactive}
+            onClick={() => {
+              setCurrentDate(new Date(year, month, day));
+            }}
+            key={Math.random()}>
+            {day}
+          </li>
+        );
+        setDays((prev) => [...prev, liEl]);
+      }
     }
 
     for (let i = 1; i <= lastDateOfMonth; i++) {
@@ -100,7 +113,11 @@ const RightCalendar = () => {
       setDays((prev) => [...prev, liEl]);
     }
 
-    for (let i = lastDayOfMonth; i < 7; i++) {
+    for (let i = lastDayOfMonth; i <= 6; i++) {
+      if (lastDayOfMonth === 0) {
+        return;
+      }
+
       const year = currentMonth === 11 ? currentYear + 1 : currentYear;
       const month = currentMonth === 11 ? 0 : currentMonth + 1;
       const day = i - lastDayOfMonth + 1;
@@ -177,4 +194,4 @@ const RightCalendar = () => {
   );
 };
 
-export default RightCalendar;
+export default SmallCalendar;

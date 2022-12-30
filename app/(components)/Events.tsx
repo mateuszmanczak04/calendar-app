@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { useEventsContext } from '../../context/useEventsContext';
 import { useLayoutContext } from '../../context/useLayoutContext';
 import EventBlock from './EventBlock';
+import EventMenu from './EventMenu';
 import styles from './Events.module.scss';
-import OnlyLines from './OnlyLines';
 
 type Props = {
   currentDate: Date;
 };
 
+const initialContextMenu = {
+  show: false,
+  x: 0,
+  y: 0,
+  _id: '',
+};
+
 const Events = ({ currentDate }: Props) => {
   const { events } = useEventsContext();
-
   const { rowHeight } = useLayoutContext();
+  const [contextMenu, setContextMenu] = useState(initialContextMenu);
+
+  const handleContextMenu = (e: MouseEvent, _id: string, yOffset: number) => {
+    e.preventDefault();
+
+    if (e.target instanceof Element) {
+      const rect = e.target.getBoundingClientRect();
+      const x = e.clientX - rect.left + 8;
+      const y = e.clientY - rect.top + yOffset;
+
+      setContextMenu({ show: true, x: x, y: y, _id: _id });
+    }
+  };
+
+  const closeContextMenu = () => {
+    setContextMenu(initialContextMenu);
+  };
 
   return (
     <div className={styles.events}>
@@ -75,10 +98,20 @@ const Events = ({ currentDate }: Props) => {
             height={height}
             color={color}
             title={title}
+            _id={_id}
             key={_id}
+            onContextMenu={handleContextMenu}
           />
         );
       })}
+      {contextMenu.show && (
+        <EventMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          closeContextMenu={closeContextMenu}
+          _id={contextMenu._id}
+        />
+      )}
     </div>
   );
 };

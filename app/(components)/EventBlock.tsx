@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { MouseEvent, useState } from 'react';
 import styles from './EventBlock.module.scss';
 
 type Props = {
@@ -8,9 +8,18 @@ type Props = {
   height: number;
   color: string;
   title: string;
+  _id: string;
+  onContextMenu: (e: MouseEvent, _id: string, yOffset: number) => void;
 };
 
-const EventBlock = ({ yOffset, height, color, title }: Props) => {
+const EventBlock = ({
+  yOffset,
+  height,
+  color,
+  title,
+  _id,
+  onContextMenu,
+}: Props) => {
   return (
     <div
       className={styles.event}
@@ -19,7 +28,8 @@ const EventBlock = ({ yOffset, height, color, title }: Props) => {
         background: color + 'aa',
         top: yOffset + 'px',
         height: height + 'px',
-      }}>
+      }}
+      onContextMenu={(e) => onContextMenu(e, _id, yOffset)}>
       {title}
     </div>
   );

@@ -11,9 +11,11 @@ type Event = {
 export const EventsContext = createContext<{
   events: Event[];
   addEvent: (event: Event) => void;
+  removeEvent: (_id: string) => void;
 }>({
   events: [],
   addEvent: () => {},
+  removeEvent: () => {},
 });
 
 type Props = {
@@ -25,6 +27,16 @@ export const EventsContextProvider = ({ children }: Props) => {
 
   const addEvent = (event: Event) => {
     setEvents((prev) => [...prev, event]);
+  };
+
+  const removeEvent = async (_id: string) => {
+    setEvents((prev) => prev.filter((p) => p._id !== _id));
+
+    const res = await fetch(`/api/remove-event/${_id}`, {
+      method: 'DELETE',
+    });
+
+    const json = await res.json();
   };
 
   useEffect(() => {
@@ -46,7 +58,7 @@ export const EventsContextProvider = ({ children }: Props) => {
   }, []);
 
   return (
-    <EventsContext.Provider value={{ events: events, addEvent: addEvent }}>
+    <EventsContext.Provider value={{ events, addEvent, removeEvent }}>
       {children}
     </EventsContext.Provider>
   );

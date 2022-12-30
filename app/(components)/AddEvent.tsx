@@ -15,15 +15,20 @@ const AddEvent = ({
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
   const [color, setColor] = useState('#AB0A8D');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { addEvent, events } = useEventsContext();
+  const { addEvent } = useEventsContext();
 
   const handleSubmit = async () => {
-    setLoading(true);
-    setError('');
     const startTimeNumber = new Date(startTime).getTime();
     const endTimeNumber = new Date(endTime).getTime();
+
+    addEvent({
+      _id: Math.random().toString(),
+      title,
+      startTime: startTimeNumber,
+      endTime: endTimeNumber,
+      color,
+    });
+    close();
 
     const res = await fetch('/api/add-event', {
       method: 'POST',
@@ -39,16 +44,6 @@ const AddEvent = ({
     });
 
     const json = await res.json();
-
-    if (!res.ok) {
-      setError(json.message);
-      setLoading(false);
-      return;
-    }
-
-    addEvent(json.event);
-    setLoading(false);
-    close();
   };
 
   return (
@@ -121,8 +116,6 @@ const AddEvent = ({
           onClick={handleSubmit}>
           Add
         </button>
-        {error && <p>{error}</p>}
-        {loading && <p>Loading...</p>}
       </div>
     </div>
   );

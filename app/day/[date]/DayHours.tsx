@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useLayoutContext } from '../../context/useLayoutContext';
-import Events from '../(components)/Events';
 import styles from './DayHours.module.scss';
-import OnlyLines from '../(components)/OnlyLines';
-import OnlyHours from '../(components)/OnlyHours';
-import EventsDay from '../(components)/EventsDay';
-import { useDateContext } from '../../context/useDateContext';
+import OnlyHours from '../../(components)/OnlyHours';
+import EventsDay from '../../(components)/EventsDay';
+import { useDateContext } from '../../../context/useDateContext';
 
 const DayHours = () => {
   const { currentDate, getDateBefore, getDateAfter } = useDateContext();
-
   const [firstDate, setFirstDate] = useState(currentDate);
   const [orders, setOrders] = useState([-1, 0, 1]);
   const [transition, setTransition] = useState('0.4s ease');

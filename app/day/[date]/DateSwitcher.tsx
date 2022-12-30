@@ -5,13 +5,16 @@ import {
   AiOutlineMinus,
   AiOutlinePlus,
 } from 'react-icons/ai';
-import { useDateContext } from '../../context/useDateContext';
-import { useLayoutContext } from '../../context/useLayoutContext';
+import { useDateContext } from '../../../context/useDateContext';
+import { useLayoutContext } from '../../../context/useLayoutContext';
+import { getDateSlug } from '../../../lib/getDateSlug';
 import styles from './DateSwitcher.module.scss';
+import moment from 'moment';
 
 const RightLeft = () => {
   const { handleZoomIn, handleZoomOut } = useLayoutContext();
-  const { currentDate, dayBack, dayAhead } = useDateContext();
+  const { currentDate, dayBack, dayAhead, getDateBefore, getDateAfter } =
+    useDateContext();
 
   const [switching, setSwitching] = useState<boolean>(false);
 
@@ -25,6 +28,11 @@ const RightLeft = () => {
           if (switching) {
             return;
           }
+          window.history.replaceState(
+            null,
+            'Calendar App',
+            `/day/${getDateSlug(getDateBefore(currentDate))}`
+          );
           dayBack();
           setSwitching(true);
           setTimeout(() => {
@@ -33,12 +41,18 @@ const RightLeft = () => {
         }}>
         <AiOutlineArrowLeft />
       </button>
-      <p>{currentDate?.toLocaleDateString('en-US')}</p>
+      {/* <p>{currentDate?.toLocaleDateString('en-US')}</p> */}
+      <p>{moment(currentDate).format('YYYY-MM-DD')}</p>
       <button
         onClick={() => {
           if (switching) {
             return;
           }
+          window.history.replaceState(
+            null,
+            'Calendar App',
+            `/day/${getDateSlug(getDateAfter(currentDate))}`
+          );
           dayAhead();
           setSwitching(true);
           setTimeout(() => {

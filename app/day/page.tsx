@@ -1,8 +1,12 @@
-import React from 'react';
-import Day from './Day';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { getDateSlug } from '../../lib/getDateSlug';
 
 const DayPage = () => {
-  return <Day />;
+  const router = useRouter();
+  const slug = getDateSlug(new Date());
+  router.replace(`/day/${slug}`);
 };
 
 export default DayPage;
