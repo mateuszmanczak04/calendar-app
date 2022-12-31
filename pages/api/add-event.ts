@@ -5,32 +5,36 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'POST') {
-    return res.status(400).json({ message: 'Invalid method.' });
-  }
+  try {
+    if (req.method !== 'POST') {
+      return res.status(400).json({ message: 'Invalid method.' });
+    }
 
-  const { title, startTime, endTime, color } = req.body;
+    const { title, startTime, endTime, color } = req.body;
 
-  if (!title || !startTime || !endTime || !color) {
+    if (!title || !startTime || !endTime || !color) {
+      return res
+        .status(400)
+        .json({ message: 'Invalid title, color, startTime or endTime' });
+    }
+
+    const db = await connectToDatabase();
+
+    const eventId = (
+      await db.collection('events').insertOne({
+        title,
+        startTime,
+        endTime,
+        color,
+      })
+    ).insertedId;
+
+    const event = await db.collection('events').findOne({ _id: eventId });
+
     return res
-      .status(400)
-      .json({ message: 'Invalid title, color, startTime or endTime' });
+      .status(200)
+      .json({ message: 'Successfully added a new event.', event });
+  } catch (err) {
+    return res.status(500).json({ message: 'Server error.' });
   }
-
-  const db = await connectToDatabase();
-
-  const eventId = (
-    await db.collection('events').insertOne({
-      title,
-      startTime,
-      endTime,
-      color,
-    })
-  ).insertedId;
-
-  const event = await db.collection('events').findOne({ _id: eventId });
-
-  return res
-    .status(200)
-    .json({ message: 'Successfully added a new event.', event });
 }

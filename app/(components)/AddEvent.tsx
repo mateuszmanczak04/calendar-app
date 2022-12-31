@@ -29,21 +29,6 @@ const AddEvent = ({
       color,
     });
     close();
-
-    const res = await fetch('/api/add-event', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title,
-        startTime: startTimeNumber,
-        endTime: endTimeNumber,
-        color,
-      }),
-    });
-
-    const json = await res.json();
   };
 
   return (

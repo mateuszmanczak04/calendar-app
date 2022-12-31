@@ -9,7 +9,12 @@ type Props = {
   color: string;
   title: string;
   _id: string;
-  onContextMenu: (e: MouseEvent, _id: string, yOffset: number) => void;
+  onContextMenu: (
+    e: MouseEvent,
+    _id: string,
+    yOffset: number,
+    title: string
+  ) => void;
 };
 
 const EventBlock = ({
@@ -29,7 +34,7 @@ const EventBlock = ({
         top: yOffset + 'px',
         height: height + 'px',
       }}
-      onContextMenu={(e) => onContextMenu(e, _id, yOffset)}>
+      onContextMenu={(e) => onContextMenu(e, _id, yOffset, title)}>
       {title}
     </div>
   );

@@ -14,6 +14,7 @@ const initialContextMenu = {
   x: 0,
   y: 0,
   _id: '',
+  title: '',
 };
 
 const Events = ({ currentDate }: Props) => {
@@ -21,7 +22,12 @@ const Events = ({ currentDate }: Props) => {
   const { rowHeight } = useLayoutContext();
   const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
-  const handleContextMenu = (e: MouseEvent, _id: string, yOffset: number) => {
+  const handleContextMenu = (
+    e: MouseEvent,
+    _id: string,
+    yOffset: number,
+    title: string
+  ) => {
     e.preventDefault();
 
     if (e.target instanceof Element) {
@@ -29,7 +35,7 @@ const Events = ({ currentDate }: Props) => {
       const x = e.clientX - rect.left + 8;
       const y = e.clientY - rect.top + yOffset;
 
-      setContextMenu({ show: true, x: x, y: y, _id: _id });
+      setContextMenu({ show: true, x: x, y: y, _id: _id, title: title });
     }
   };
 
@@ -110,6 +116,7 @@ const Events = ({ currentDate }: Props) => {
           y={contextMenu.y}
           closeContextMenu={closeContextMenu}
           _id={contextMenu._id}
+          title={contextMenu.title}
         />
       )}
     </div>
