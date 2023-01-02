@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useEventsContext } from '../../context/useEventsContext';
 import styles from './AddEvent.module.scss';
+import DateAndTimePicker from './DateAndTimePicker';
 
 const AddEvent = ({
   isOpen,
@@ -12,14 +13,14 @@ const AddEvent = ({
   close: () => void;
 }) => {
   const [title, setTitle] = useState<string>('');
-  const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [endTime, setEndTime] = useState<Date>(new Date());
   const [color, setColor] = useState('#AB0A8D');
   const { addEvent } = useEventsContext();
 
   const handleSubmit = async () => {
-    const startTimeNumber = new Date(startTime).getTime();
-    const endTimeNumber = new Date(endTime).getTime();
+    const startTimeNumber = startTime.getTime();
+    const endTimeNumber = endTime.getTime();
 
     addEvent({
       _id: Math.random().toString(),
@@ -35,31 +36,30 @@ const AddEvent = ({
     <div className={styles.container}>
       <div className={styles.backdrop} onClick={close}></div>
       <div className={styles.content}>
-        <label>
-          <p>Title</p>
-          <input
-            type='text'
-            placeholder='Title...'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </label>
-        <label>
-          <p>Start Time</p>
-          <input
-            type='datetime-local'
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-          />
-        </label>
-        <label>
-          <p>End Time</p>
-          <input
-            type='datetime-local'
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-          />
-        </label>
+        <input
+          type='text'
+          placeholder='Title...'
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <div className={styles.times}>
+          <div className={styles.label}>
+            <h3>Start Time</h3>
+            <DateAndTimePicker
+              setDate={useCallback((date) => {
+                setStartTime(date);
+              }, [])}
+            />
+          </div>
+          <div className={styles.label}>
+            <h3>End Time</h3>
+            <DateAndTimePicker
+              setDate={useCallback((date) => {
+                setEndTime(date);
+              }, [])}
+            />
+          </div>
+        </div>
         <div className={styles.colors}>
           <div className={styles.row}>
             <div
@@ -96,7 +96,7 @@ const AddEvent = ({
         </div>
         <button
           disabled={
-            !title || !startTime || !endTime || startTime > endTime || !color
+            !title || !startTime || !endTime || startTime >= endTime || !color
           }
           onClick={handleSubmit}>
           Add

@@ -30,7 +30,7 @@ export const EventsContextProvider = ({ children }: Props) => {
   const addEvent = async (event: Event) => {
     setEvents((prev) => [...prev, event]);
 
-    await fetch('/api/add-event', {
+    const res = await fetch('/api/add-event', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,6 +42,17 @@ export const EventsContextProvider = ({ children }: Props) => {
         color: event.color,
       }),
     });
+
+    const json = await res.json();
+
+    setEvents((prev) =>
+      prev.map((e) => {
+        if (e._id === event._id) {
+          return { ...e, _id: json.event._id };
+        }
+        return e;
+      })
+    );
   };
 
   const removeEvent = async (_id: string) => {

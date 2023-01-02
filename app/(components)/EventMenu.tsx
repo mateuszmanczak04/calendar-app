@@ -19,6 +19,7 @@ const EventMenu = ({ x, y, closeContextMenu, _id, title }: Props) => {
 
   const handleRemove = () => {
     removeEvent(_id);
+    closeContextMenu();
   };
 
   const handleClose = () => {
