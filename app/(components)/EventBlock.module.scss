@@ -3,8 +3,26 @@
   left: 8px;
   width: calc(100% - 16px);
   background: rgba(0, 0, 0, 0.2);
-  border: 1px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+
+  p {
+    position: absolute;
+    background: var(--black75);
+    color: white;
+    padding: 4px 16px;
+    border-radius: 4px;
+    left: 12px;
+    top: 12px;
+  }
+
+  .drag {
+    height: 4px;
+    width: 100%;
+
+    position: absolute;
+    cursor: ns-resize;
+  }
 }

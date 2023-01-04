@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import AddEvent from './AddEvent';
+import AddEvent from './(addEvent)/AddEvent';
 import styles from './TopBar.module.scss';
 
 const TopBar = () => {
@@ -17,12 +17,7 @@ const TopBar = () => {
         <button>Year</button>
       </div>
       <input type='text' placeholder='Search' />
-      {isAddEventOpen && (
-        <AddEvent
-          isOpen={isAddEventOpen}
-          close={() => setIsAddEventOpen(false)}
-        />
-      )}
+      {isAddEventOpen && <AddEvent close={() => setIsAddEventOpen(false)} />}
     </div>
   );
 };

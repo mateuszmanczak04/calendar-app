@@ -10,7 +10,9 @@ const TimePicker = ({
   initialDate: Date;
 }) => {
   const [hour, setHour] = useState(initialDate.getHours());
-  const [minute, setMinute] = useState(initialDate.getMinutes());
+  const [minute, setMinute] = useState(
+    initialDate.getMinutes() - (initialDate.getMinutes() % 5)
+  );
 
   const handleHourUp = () => {
     if (hour === 0) {

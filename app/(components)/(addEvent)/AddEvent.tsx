@@ -1,17 +1,11 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { useEventsContext } from '../../context/useEventsContext';
+import { useEventsContext } from '../../../context/useEventsContext';
 import styles from './AddEvent.module.scss';
 import DateAndTimePicker from './DateAndTimePicker';
 
-const AddEvent = ({
-  isOpen,
-  close,
-}: {
-  isOpen: boolean;
-  close: () => void;
-}) => {
+const AddEvent = ({ close }: { close: () => void }) => {
   const [title, setTitle] = useState<string>('');
   const [startTime, setStartTime] = useState<Date>(new Date());
   const [endTime, setEndTime] = useState<Date>(new Date());
@@ -19,8 +13,9 @@ const AddEvent = ({
   const { addEvent } = useEventsContext();
 
   const handleSubmit = async () => {
-    const startTimeNumber = startTime.getTime();
-    const endTimeNumber = endTime.getTime();
+    const startTimeNumber =
+      startTime.getTime() - (startTime.getTime() % 300000);
+    const endTimeNumber = endTime.getTime() - (endTime.getTime() % 300000);
 
     addEvent({
       _id: Math.random().toString(),

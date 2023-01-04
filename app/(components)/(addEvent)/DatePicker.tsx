@@ -1,11 +1,5 @@
-import React, {
-  ChangeEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { useDateContext } from '../../context/useDateContext';
 import styles from './DatePicker.module.scss';
 
 const months = [

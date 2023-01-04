@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useDateContext } from '../../context/useDateContext';
+import { useDateContext } from '../../../context/useDateContext';
 import DatePicker from './DatePicker';
 import styles from './DateAndTimePicker.module.scss';
-import { useOnClickOutside } from '../../lib/useOnClickOutside';
+import { useOnClickOutside } from '../../../lib/useOnClickOutside';
 import TimePicker from './TimePicker';
 
 const DateAndTimePicker = ({ setDate }: { setDate: (date: Date) => void }) => {
@@ -14,7 +14,9 @@ const DateAndTimePicker = ({ setDate }: { setDate: (date: Date) => void }) => {
   const [month, setMonth] = useState(initialDate.getMonth());
   const [day, setDay] = useState(initialDate.getDate());
   const [hour, setHour] = useState(new Date().getHours());
-  const [minute, setMinute] = useState(new Date().getMinutes());
+  const [minute, setMinute] = useState(
+    new Date().getMinutes() - (new Date().getMinutes() % 5)
+  );
 
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);

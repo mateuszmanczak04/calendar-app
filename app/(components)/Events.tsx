@@ -2,7 +2,7 @@ import React, { MouseEvent, useState } from 'react';
 import { useEventsContext } from '../../context/useEventsContext';
 import { useLayoutContext } from '../../context/useLayoutContext';
 import EventBlock from './EventBlock';
-import EventMenu from './EventMenu';
+import EventMenu from './(editEvent)/EventMenu';
 import styles from './Events.module.scss';
 
 type Props = {
@@ -15,6 +15,8 @@ const initialContextMenu = {
   y: 0,
   _id: '',
   title: '',
+  startTime: 0,
+  endTime: 0,
 };
 
 const Events = ({ currentDate }: Props) => {
@@ -26,7 +28,9 @@ const Events = ({ currentDate }: Props) => {
     e: MouseEvent,
     _id: string,
     yOffset: number,
-    title: string
+    title: string,
+    startTime: number,
+    endTime: number
   ) => {
     e.preventDefault();
 
@@ -35,7 +39,15 @@ const Events = ({ currentDate }: Props) => {
       const x = e.clientX - rect.left + 8;
       const y = e.clientY - rect.top + yOffset;
 
-      setContextMenu({ show: true, x: x, y: y, _id: _id, title: title });
+      setContextMenu({
+        show: true,
+        x: x,
+        y: y,
+        _id: _id,
+        title: title,
+        startTime,
+        endTime,
+      });
     }
   };
 
@@ -106,6 +118,8 @@ const Events = ({ currentDate }: Props) => {
             title={title}
             _id={_id}
             key={_id}
+            startTime={startTime}
+            endTime={endTime}
             onContextMenu={handleContextMenu}
           />
         );
@@ -117,6 +131,8 @@ const Events = ({ currentDate }: Props) => {
           closeContextMenu={closeContextMenu}
           _id={contextMenu._id}
           title={contextMenu.title}
+          startTime={contextMenu.startTime}
+          endTime={contextMenu.endTime}
         />
       )}
     </div>

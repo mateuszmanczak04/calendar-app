@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { __String } from 'typescript';
 
 type Event = {
   title: string;
@@ -13,11 +20,15 @@ export const EventsContext = createContext<{
   addEvent: (event: Event) => void;
   removeEvent: (_id: string) => void;
   renameEvent: (_id: string, title: string) => void;
+  changeDate: (_id: string, startDate: Date, endDate: Date) => void;
+  submitChangeDate: (_id: string, startDate: Date, endDate: Date) => void;
 }>({
   events: [],
   addEvent: () => {},
   removeEvent: () => {},
   renameEvent: () => {},
+  changeDate: () => {},
+  submitChangeDate: () => {},
 });
 
 type Props = {
@@ -82,6 +93,38 @@ export const EventsContextProvider = ({ children }: Props) => {
     });
   };
 
+  const changeDate = useCallback(
+    async (_id: string, startDate: Date, endDate: Date) => {
+      setEvents((prevEvents) =>
+        prevEvents.map((e) => {
+          if (e._id === _id) {
+            return {
+              ...e,
+              startTime: startDate.getTime(),
+              endTime: endDate.getTime(),
+            };
+          }
+          return e;
+        })
+      );
+    },
+    []
+  );
+
+  const submitChangeDate = async (
+    _id: string,
+    startDate: Date,
+    endDate: Date
+  ) => {
+    await fetch('/api/change-date', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ _id, startDate, endDate }),
+    });
+  };
+
   useEffect(() => {
     const fetchAllEvents = async () => {
       const res = await fetch('/api/get-all-events', {
@@ -102,7 +145,14 @@ export const EventsContextProvider = ({ children }: Props) => {
 
   return (
     <EventsContext.Provider
-      value={{ events, addEvent, removeEvent, renameEvent }}>
+      value={{
+        events,
+        addEvent,
+        removeEvent,
+        renameEvent,
+        changeDate,
+        submitChangeDate,
+      }}>
       {children}
     </EventsContext.Provider>
   );
