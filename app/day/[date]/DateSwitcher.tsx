@@ -31,7 +31,7 @@ const RightLeft = () => {
           window.history.replaceState(
             null,
             'Calendar App',
-            `/day/${getDateSlug(getDateBefore(currentDate))}`
+            `/day/${getDateSlug(getDateBefore(currentDate, 1))}`
           );
           dayBack();
           setSwitching(true);
@@ -51,7 +51,7 @@ const RightLeft = () => {
           window.history.replaceState(
             null,
             'Calendar App',
-            `/day/${getDateSlug(getDateAfter(currentDate))}`
+            `/day/${getDateSlug(getDateAfter(currentDate, 1))}`
           );
           dayAhead();
           setSwitching(true);
