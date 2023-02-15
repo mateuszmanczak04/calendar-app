@@ -121,6 +121,7 @@ const Events = ({ currentDate }: Props) => {
             startTime={startTime}
             endTime={endTime}
             onContextMenu={handleContextMenu}
+            currentDate={currentDate}
           />
         );
       })}

@@ -7,8 +7,11 @@
   align-items: center;
   justify-content: center;
   user-select: none;
+  overflow: hidden;
+  container-type: size;
 
-  p {
+  .title {
+    max-width: calc(100% - 24px);
     position: absolute;
     background: var(--black75);
     color: white;
@@ -16,13 +19,24 @@
     border-radius: 4px;
     left: 12px;
     top: 12px;
+    overflow-wrap: break-word;
+    font-size: 20px;
   }
 
   .drag {
     height: 4px;
     width: 100%;
+    background: red;
 
     position: absolute;
     cursor: ns-resize;
+  }
+}
+
+@container (max-width: 300px) {
+  .event {
+    .title {
+      font-size: 14px;
+    }
   }
 }

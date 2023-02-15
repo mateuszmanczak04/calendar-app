@@ -56,8 +56,8 @@ const EventMenu = ({
       <div
         className={styles.item}
         onClick={handleRemove}
-        style={{ background: '#d36565', color: 'white' }}>
-        <p>Delete</p>
+        style={{ background: '#d36565' }}>
+        <p style={{ color: 'white' }}>Delete</p>
       </div>
       <form onSubmit={handleClose}>
         <input

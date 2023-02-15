@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  border-bottom: 1px solid var(--black50);
+  display: flex;
+
+  .first {
+    width: 100px;
+    border-right: 1px solid var(--black50);
+    height: 100%;
+  }
+
+  .day {
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid var(--black25);
+    padding: 12px;
+    background: var(--black10);
+  }
+}

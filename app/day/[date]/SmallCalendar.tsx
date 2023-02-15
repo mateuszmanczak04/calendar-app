@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './SmallCalendar.module.scss';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { useDateContext } from '../../context/useDateContext';
+import { useDateContext } from '../../../context/useDateContext';
 
 const months = [
   'January',

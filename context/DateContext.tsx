@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import React, {
   createContext,
   Dispatch,
@@ -5,14 +6,15 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { getDateSlug } from '../lib/getDateSlug';
 
 export const DateContext = createContext<{
   currentDate: Date;
   setCurrentDate: Dispatch<SetStateAction<Date>>;
   dayAhead: () => void;
   dayBack: () => void;
-  getDateBefore: (date: Date) => Date;
-  getDateAfter: (date: Date) => Date;
+  getDateBefore: (date: Date, amount: number) => Date;
+  getDateAfter: (date: Date, amount: number) => Date;
 }>({
   currentDate: new Date(),
   setCurrentDate: () => {},
@@ -29,15 +31,15 @@ export const DateContextProvider = ({
 }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
-  const getDateBefore = (date: Date) => {
+  const getDateBefore = (date: Date, amount: number) => {
     const dateBefore = new Date();
-    dateBefore.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+    dateBefore.setTime(date.getTime() - amount * 24 * 60 * 60 * 1000);
     return dateBefore;
   };
 
-  const getDateAfter = (date: Date) => {
+  const getDateAfter = (date: Date, amount: number) => {
     const dateAfter = new Date();
-    dateAfter.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+    dateAfter.setTime(date.getTime() + amount * 24 * 60 * 60 * 1000);
     return dateAfter;
   };
 

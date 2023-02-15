@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useState } from 'react';
 import AddEvent from './(addEvent)/AddEvent';
 import styles from './TopBar.module.scss';
@@ -11,8 +12,8 @@ const TopBar = () => {
     <div className={styles.container}>
       <button onClick={() => setIsAddEventOpen(true)}>Add an event</button>
       <div className={styles.mode}>
-        <button>Day</button>
-        <button>Week</button>
+        <Link href='/day'>Day</Link>
+        <Link href='/week'>Week</Link>
         <button>Month</button>
         <button>Year</button>
       </div>

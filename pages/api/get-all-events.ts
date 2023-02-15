@@ -12,7 +12,11 @@ export default async function handler(
 
     const db = await connectToDatabase();
 
-    const events = await db.collection('events').find().toArray();
+    const events = await db
+      .collection('events')
+      .find()
+      .sort({ startTime: 1 })
+      .toArray();
 
     return res.status(200).json({ events });
   } catch (err) {

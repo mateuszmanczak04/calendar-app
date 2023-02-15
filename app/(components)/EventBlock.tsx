@@ -14,6 +14,7 @@ type Props = {
   _id: string;
   startTime: number;
   endTime: number;
+  currentDate: Date;
   onContextMenu: (
     e: React.MouseEvent,
     _id: string,
@@ -33,6 +34,7 @@ const EventBlock = ({
   startTime,
   endTime,
   onContextMenu,
+  currentDate,
 }: Props) => {
   const [height, setHeight] = useState(initialHeight);
   const ref = useRef<HTMLDivElement>(null);
@@ -43,12 +45,11 @@ const EventBlock = ({
   const [displayEnd, setDisplayEnd] = useState(true);
   const [displayStart, setDisplayStart] = useState(true);
   const { submitChangeDate, changeDate } = useEventsContext();
-  const { currentDate } = useDateContext();
 
   useEffect(() => {
     const tomorrow = new Date(currentDate);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(24, 0, 0);
+    tomorrow.setHours(0, 0, 0);
     if (endTime > tomorrow.getTime()) setDisplayEnd(false);
     else setDisplayEnd(true);
 
@@ -129,7 +130,7 @@ const EventBlock = ({
 
       const mouseFromTop =
         e.pageY - ref!.current!.parentElement!.getBoundingClientRect().top;
-      if (mouseFromTop < 0 || mouseFromTop >= 24 * rowHeight) {
+      if (mouseFromTop < 0 || mouseFromTop >= 24 * rowHeight || height <= 0) {
         setYOffset(initialYOffset);
         setHeight(initialHeight);
         setMovingTop(false);
@@ -137,19 +138,22 @@ const EventBlock = ({
         return;
       }
 
+      const startDate = new Date(startTime);
+      const endDate = new Date(endTime);
+
       if (movingTop) {
         setMovingTop(false);
+        startDate.setHours(0, (yOffset / (rowHeight * 24)) * 24 * 60, 0);
       }
 
       if (movingBottom) {
         setMovingBottom(false);
+        endDate.setHours(
+          0,
+          ((yOffset + height) / (rowHeight * 24)) * 24 * 60,
+          0
+        );
       }
-
-      const startDate = new Date(startTime);
-      startDate.setHours(0, (yOffset / (rowHeight * 24)) * 24 * 60, 0);
-
-      const endDate = new Date(endTime);
-      endDate.setHours(0, ((yOffset + height) / (rowHeight * 24)) * 24 * 60, 0);
 
       changeDate(_id, startDate, endDate);
       submitChangeDate(_id, startDate, endDate);
@@ -197,7 +201,7 @@ const EventBlock = ({
           style={{ top: 0, background: color + 'aa' }}
           onMouseDown={handleMouseDownTop}></div>
       )}
-      <p>{title}</p>
+      <p className={styles.title}>{title}</p>
       {displayEnd && (
         <div
           className={styles.drag}
