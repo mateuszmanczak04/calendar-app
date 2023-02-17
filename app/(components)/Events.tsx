@@ -17,6 +17,8 @@ const initialContextMenu = {
   title: '',
   startTime: 0,
   endTime: 0,
+  right: true,
+  down: true,
 };
 
 const Events = ({ currentDate }: Props) => {
@@ -39,14 +41,22 @@ const Events = ({ currentDate }: Props) => {
       const x = e.clientX - rect.left + 8;
       const y = e.clientY - rect.top + yOffset;
 
+      const mouseX = e.pageX;
+      const mouseY = e.pageY;
+
+      const right = mouseX <= screen.width / 2;
+      const down = mouseY <= screen.height / 2;
+
       setContextMenu({
         show: true,
-        x: x,
-        y: y,
+        x: mouseX,
+        y: mouseY,
         _id: _id,
         title: title,
         startTime,
         endTime,
+        right,
+        down,
       });
     }
   };
@@ -134,6 +144,8 @@ const Events = ({ currentDate }: Props) => {
           title={contextMenu.title}
           startTime={contextMenu.startTime}
           endTime={contextMenu.endTime}
+          right={contextMenu.right}
+          down={contextMenu.down}
         />
       )}
     </div>

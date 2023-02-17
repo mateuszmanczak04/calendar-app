@@ -12,6 +12,8 @@ type Props = {
   title: string;
   startTime: number;
   endTime: number;
+  right: boolean;
+  down: boolean;
 };
 
 const EventMenu = ({
@@ -22,6 +24,8 @@ const EventMenu = ({
   title,
   startTime,
   endTime,
+  right,
+  down,
 }: Props) => {
   const contextMenuRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +56,10 @@ const EventMenu = ({
     <div
       ref={contextMenuRef}
       className={styles.container}
-      style={{ left: x + 'px', top: y + 'px' }}>
+      style={{
+        left: right ? x + 'px' : x - 360 + 'px',
+        top: down ? y + 'px' : y - 420 + 'px',
+      }}>
       <div
         className={styles.item}
         onClick={handleRemove}

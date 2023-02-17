@@ -14,7 +14,7 @@ const TopBar = () => {
       <div className={styles.mode}>
         <Link href='/day'>Day</Link>
         <Link href='/week'>Week</Link>
-        <button>Month</button>
+        <Link href='/month'>Month</Link>
         <button>Year</button>
       </div>
       <input type='text' placeholder='Search' />

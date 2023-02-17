@@ -1,7 +1,7 @@
 .container {
-  position: absolute;
+  position: fixed;
   z-index: 20;
-  translate: -50% -50%;
+  // translate: -50% -50%;
   background: white;
   border: 1px solid var(--black25);
   padding: 8px;
