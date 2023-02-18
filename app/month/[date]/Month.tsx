@@ -247,14 +247,16 @@ const Month = ({ date: initialDate }: { date: string }) => {
                   key={i}
                   onClick={() => day && goToDay(day.day)}>
                   <p className={styles.number}>{day && day.day.getDate()}</p>
-                  <div className={styles.events}>
+                  <div
+                    className={styles.events}
+                    style={{ flexDirection: width >= 600 ? 'column' : 'row' }}>
                     {day &&
                       day.events.map((e) => (
                         <p
                           className={styles.event}
                           key={e._id}
                           style={{ background: e.color }}>
-                          {e.title}
+                          {width >= 900 ? e.title : ''}
                         </p>
                       ))}
                   </div>
