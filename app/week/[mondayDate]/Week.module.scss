@@ -4,7 +4,7 @@
   // height: 100%;
   flex: 1;
   display: flex;
-  overflow: hidden;
+  overflow-x: scroll;
 
   .left {
     position: relative;
@@ -14,10 +14,24 @@
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--black50);
+    border-left: 1px solid var(--black50);
+    overflow-x: scroll;
+    min-width: 900px;
+    width: 100%;
+    // background: red;
   }
   .right {
     width: 400px;
     padding: 24px;
     background: var(--black10);
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1360px) {
+  .container {
+    .right {
+      display: block;
+    }
   }
 }

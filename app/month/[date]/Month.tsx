@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useDateContext } from '../../../context/useDateContext';
 import { useEventsContext } from '../../../context/useEventsContext';
+import useWindowWidth from '../../../hooks/useWindowWidth';
 import { getDateSlug } from '../../../lib/getDateSlug';
 import styles from './Month.module.scss';
 
@@ -22,7 +23,7 @@ const monthNames = [
   'December',
 ];
 
-const weekdays = [
+let weekdays = [
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -48,6 +49,23 @@ const Month = ({ date: initialDate }: { date: string }) => {
     } | null)[][]
   >([]);
   const { events } = useEventsContext();
+  const width = useWindowWidth();
+
+  useEffect(() => {
+    if (screen.width >= 900) {
+      weekdays = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ];
+    } else {
+      weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    }
+  }, [width]);
 
   useEffect(() => {
     const firstDayOfMonth = new Date(

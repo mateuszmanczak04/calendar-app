@@ -37,5 +37,6 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  /* overflow: hidden; */
+  overflow: hidden;
+  min-width: 360px;
 }

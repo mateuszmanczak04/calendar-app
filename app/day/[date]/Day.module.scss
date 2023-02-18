@@ -19,5 +19,14 @@
     width: 400px;
     padding: 24px;
     background: var(--black10);
+    display: none;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .container {
+    .right {
+      display: block;
+    }
   }
 }

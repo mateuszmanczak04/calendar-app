@@ -68,6 +68,7 @@
         z-index: 1;
         position: relative;
         width: calc(100% / 7);
+        color: var(--black);
 
         &::before {
           position: absolute;
@@ -93,11 +94,15 @@
 
         &.active {
           color: white;
+        }
+
+        &.first {
+          color: white;
 
           &::before {
             width: 700%;
-            border-radius: 40px;
             left: 350%;
+            border-radius: 40px;
             background: var(--primary);
           }
         }

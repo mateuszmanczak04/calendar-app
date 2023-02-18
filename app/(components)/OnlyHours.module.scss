@@ -1,5 +1,5 @@
 .container {
-  width: 100px;
+  width: 64px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--black50);
@@ -15,5 +15,11 @@
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid var(--black25);
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .container {
+    width: 100px;
   }
 }

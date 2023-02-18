@@ -15,9 +15,8 @@ const TopBar = () => {
         <Link href='/day'>Day</Link>
         <Link href='/week'>Week</Link>
         <Link href='/month'>Month</Link>
-        <button>Year</button>
       </div>
-      <input type='text' placeholder='Search' />
+      {/* <input type='text' placeholder='Search' /> */}
       {isAddEventOpen && <AddEvent close={() => setIsAddEventOpen(false)} />}
     </div>
   );

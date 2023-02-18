@@ -59,10 +59,10 @@ const AddEvent = ({ close }: { close: () => void }) => {
           <div className={styles.row}>
             <div
               className={`${styles.color} ${
-                color === '#AB0A8D' && styles.active
+                color === '#4fe721' && styles.active
               }`}
-              style={{ background: '#AB0A8D' }}
-              onClick={() => setColor('#AB0A8D')}></div>
+              style={{ background: '#4fe721' }}
+              onClick={() => setColor('#4fe721')}></div>
             <div
               className={`${styles.color} ${
                 color === '#F7D740' && styles.active
@@ -71,10 +71,10 @@ const AddEvent = ({ close }: { close: () => void }) => {
               onClick={() => setColor('#F7D740')}></div>
             <div
               className={`${styles.color} ${
-                color === '#F728D1' && styles.active
+                color === '#e885d6' && styles.active
               }`}
-              style={{ background: '#F728D1' }}
-              onClick={() => setColor('#F728D1')}></div>
+              style={{ background: '#e885d6' }}
+              onClick={() => setColor('#e885d6')}></div>
             <div
               className={`${styles.color} ${
                 color === '#0FF7EC' && styles.active
@@ -87,11 +87,23 @@ const AddEvent = ({ close }: { close: () => void }) => {
               }`}
               style={{ background: '#13ABA4' }}
               onClick={() => setColor('#13ABA4')}></div>
+            <div
+              className={`${styles.color} ${
+                color === '#e87e2d' && styles.active
+              }`}
+              style={{ background: '#e87e2d' }}
+              onClick={() => setColor('#e87e2d')}></div>
+            <div
+              className={`${styles.color} ${
+                color === '#e85151' && styles.active
+              }`}
+              style={{ background: '#e85151' }}
+              onClick={() => setColor('#e85151')}></div>
           </div>
         </div>
         <button
           disabled={
-            !title || !startTime || !endTime || startTime >= endTime || !color
+            !title || !startTime || !endTime || startTime > endTime || !color
           }
           onClick={handleSubmit}>
           Add

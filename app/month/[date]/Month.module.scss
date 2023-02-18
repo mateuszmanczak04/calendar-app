@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  padding: 32px;
+  padding: 16px;
   width: 100%;
   gap: 16px;
   max-width: 1500px;
@@ -10,6 +10,10 @@
   .top {
     display: flex;
     justify-content: space-between;
+
+    h1 {
+      font-size: 24px;
+    }
 
     .buttons {
       display: flex;
@@ -43,7 +47,7 @@
 
     .dayName {
       flex: 1;
-      padding: 16px;
+      padding: 8px;
       text-align: center;
       border-right: 1px solid var(--black50);
       overflow-x: hidden;
@@ -68,7 +72,7 @@
         // width: calc(100% / 7);
         cursor: pointer;
         flex: 1;
-        height: 122px;
+        height: 64px;
         text-align: center;
         padding: 8px;
         display: flex;
@@ -96,6 +100,30 @@
             background: var(--black10);
             border-radius: 4px;
           }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .container {
+    .top {
+      h1 {
+        font-size: 32px;
+      }
+    }
+
+    .header {
+      .dayName {
+        padding: 16px;
+      }
+    }
+
+    .days {
+      .row {
+        .day {
+          height: 128px;
         }
       }
     }

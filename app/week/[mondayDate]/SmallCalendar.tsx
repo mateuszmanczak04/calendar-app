@@ -97,16 +97,27 @@ const SmallCalendar = () => {
     }
 
     for (let i = 1; i <= lastDateOfMonth; i++) {
-      const isToday =
+      const isThisMonday =
         i === currentDate.getDate() &&
         currentMonth === currentDate.getMonth() &&
-        currentYear === currentDate.getFullYear()
-          ? 'active'
-          : '';
+        currentYear === currentDate.getFullYear();
+
+      const isThisWeek =
+        i >= currentDate.getDate() &&
+        i <= currentDate.getDate() + 6 &&
+        currentMonth === currentDate.getMonth() &&
+        currentYear === currentDate.getFullYear();
+
+      let nameOfClass = '';
+      if (isThisMonday) {
+        nameOfClass = 'first';
+      } else if (isThisWeek) {
+        nameOfClass = 'active';
+      }
 
       const liEl = (
         <li
-          className={styles[isToday]}
+          className={styles[nameOfClass]}
           onClick={() => {
             const monday = new Date(currentYear, currentMonth, i);
             monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));

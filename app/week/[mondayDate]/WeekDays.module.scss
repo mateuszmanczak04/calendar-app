@@ -4,7 +4,7 @@
   display: flex;
 
   .first {
-    width: 100px;
+    width: 64px;
     border-right: 1px solid var(--black50);
     height: 100%;
   }
@@ -15,5 +15,13 @@
     border-right: 1px solid var(--black25);
     padding: 12px;
     background: var(--black10);
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .container {
+    .first {
+      width: 100px;
+    }
   }
 }

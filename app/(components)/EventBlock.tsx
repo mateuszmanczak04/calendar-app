@@ -190,6 +190,7 @@ const EventBlock = ({
         background: color + 'aa',
         top: yOffset + 'px',
         height: height + 'px',
+        minHeight: '16px',
       }}
       onContextMenu={(e) =>
         onContextMenu(e, _id, yOffset, title, startTime, endTime)
