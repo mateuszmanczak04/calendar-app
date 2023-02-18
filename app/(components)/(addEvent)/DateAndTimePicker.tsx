@@ -87,12 +87,13 @@ const DateAndTimePicker = ({ setDate }: { setDate: (date: Date) => void }) => {
           {isDatePickerOpen && (
             <motion.div
               style={{
-                position: 'absolute',
-                top: '52px',
-                width: '90%',
-                left: '5%',
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                translateX: '-50%',
+                translateY: '-50%',
                 zIndex: 20,
-                transformOrigin: 'top',
+                transformOrigin: 'center',
                 boxShadow: '0 0 16px rgba(0, 0, 0, 0.3)',
               }}
               initial={{ scale: 0 }}
@@ -113,12 +114,14 @@ const DateAndTimePicker = ({ setDate }: { setDate: (date: Date) => void }) => {
           {isTimePickerOpen && (
             <motion.div
               style={{
-                position: 'absolute',
-                top: '52px',
-                width: '60%',
-                left: '20%',
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                translateX: '-50%',
+                translateY: '-50%',
                 zIndex: 20,
-                transformOrigin: 'top',
+                transformOrigin: 'center',
+                borderRadius: '8px',
                 boxShadow: '0 0 16px rgba(0, 0, 0, 0.3)',
               }}
               initial={{ scale: 0 }}
