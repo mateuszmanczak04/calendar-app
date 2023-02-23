@@ -81,61 +81,14 @@ const DateAndTimePicker = ({ setDate }: { setDate: (date: Date) => void }) => {
 
   return (
     <motion.div className={styles.container}>
-      <div className={styles.group}>
-        <p onClick={handleToggleDatePicker}>{displayDate}</p>
-        <AnimatePresence>
-          {isDatePickerOpen && (
-            <motion.div
-              style={{
-                position: 'fixed',
-                top: '50%',
-                left: '50%',
-                translateX: '-50%',
-                translateY: '-50%',
-                zIndex: 20,
-                transformOrigin: 'center',
-                boxShadow: '0 0 16px rgba(0, 0, 0, 0.3)',
-              }}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              ref={datePickerRef}>
-              <DatePicker
-                setDate={handleSetDate}
-                initialDate={new Date(year, month, day)}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-      <div className={styles.group}>
-        <p onClick={handleToggleTimePicker}>{displayTime}</p>
-        <AnimatePresence>
-          {isTimePickerOpen && (
-            <motion.div
-              style={{
-                position: 'fixed',
-                top: '50%',
-                left: '50%',
-                translateX: '-50%',
-                translateY: '-50%',
-                zIndex: 20,
-                transformOrigin: 'center',
-                borderRadius: '8px',
-                boxShadow: '0 0 16px rgba(0, 0, 0, 0.3)',
-              }}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              ref={timePickerRef}>
-              <TimePicker
-                setTime={handleSetTime}
-                initialDate={new Date(year, month, day, hour, minute)}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <DatePicker
+        setDate={handleSetDate}
+        initialDate={new Date(year, month, day)}
+      />
+      <TimePicker
+        setTime={handleSetTime}
+        initialDate={new Date(year, month, day, hour, minute)}
+      />
     </motion.div>
   );
 };

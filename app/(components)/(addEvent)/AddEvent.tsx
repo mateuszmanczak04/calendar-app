@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useEventsContext } from '../../../context/useEventsContext';
 import styles from './AddEvent.module.scss';
 import DateAndTimePicker from './DateAndTimePicker';
+import { MdClose } from 'react-icons/md';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const AddEvent = ({ close }: { close: () => void }) => {
   const [title, setTitle] = useState<string>('');
@@ -27,19 +29,36 @@ const AddEvent = ({ close }: { close: () => void }) => {
     close();
   };
 
+  useEffect(() => {
+    const escHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close();
+      }
+    };
+
+    window.addEventListener('keydown', escHandler);
+
+    return () => window.removeEventListener('keydown', escHandler);
+  }, []);
+
   return (
     <div className={styles.container}>
-      <div className={styles.backdrop} onClick={close}></div>
+      {/* <div className={styles.backdrop} onClick={close}></div> */}
       <div className={styles.content}>
-        <input
-          type='text'
-          placeholder='Title...'
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <div className={styles.top}>
+          <input
+            type='text'
+            placeholder='Title...'
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <button onClick={close}>
+            <MdClose />
+          </button>
+        </div>
         <div className={styles.times}>
           <div className={styles.label}>
-            <h3>Start Time</h3>
+            <h2>Start Time</h2>
             <DateAndTimePicker
               setDate={useCallback((date) => {
                 setStartTime(date);
@@ -47,7 +66,7 @@ const AddEvent = ({ close }: { close: () => void }) => {
             />
           </div>
           <div className={styles.label}>
-            <h3>End Time</h3>
+            <h2>End Time</h2>
             <DateAndTimePicker
               setDate={useCallback((date) => {
                 setEndTime(date);
