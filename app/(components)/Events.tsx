@@ -1,69 +1,16 @@
-import React, { MouseEvent, useState } from 'react';
+import React from 'react';
 import { useEventsContext } from '../../context/useEventsContext';
 import { useLayoutContext } from '../../context/useLayoutContext';
 import EventBlock from './EventBlock';
-import EventMenu from './(editEvent)/EventMenu';
 import styles from './Events.module.scss';
 
 type Props = {
   currentDate: Date;
 };
 
-const initialContextMenu = {
-  show: false,
-  x: 0,
-  y: 0,
-  _id: '',
-  title: '',
-  startTime: 0,
-  endTime: 0,
-  right: true,
-  down: true,
-};
-
 const Events = ({ currentDate }: Props) => {
   const { events } = useEventsContext();
   const { rowHeight } = useLayoutContext();
-  const [contextMenu, setContextMenu] = useState(initialContextMenu);
-
-  const handleContextMenu = (
-    e: MouseEvent,
-    _id: string,
-    yOffset: number,
-    title: string,
-    startTime: number,
-    endTime: number
-  ) => {
-    e.preventDefault();
-
-    if (e.target instanceof Element) {
-      const rect = e.target.getBoundingClientRect();
-      const x = e.clientX - rect.left + 8;
-      const y = e.clientY - rect.top + yOffset;
-
-      const mouseX = e.pageX;
-      const mouseY = e.pageY;
-
-      const right = mouseX <= screen.width / 2;
-      const down = mouseY <= screen.height / 2;
-
-      setContextMenu({
-        show: true,
-        x: mouseX,
-        y: mouseY,
-        _id: _id,
-        title: title,
-        startTime,
-        endTime,
-        right,
-        down,
-      });
-    }
-  };
-
-  const closeContextMenu = () => {
-    setContextMenu(initialContextMenu);
-  };
 
   return (
     <div className={styles.events}>
@@ -130,24 +77,11 @@ const Events = ({ currentDate }: Props) => {
             key={_id}
             startTime={startTime}
             endTime={endTime}
-            onContextMenu={handleContextMenu}
             currentDate={currentDate}
+            // openEditMenu={openEditMenu}
           />
         );
       })}
-      {contextMenu.show && (
-        <EventMenu
-          x={contextMenu.x}
-          y={contextMenu.y}
-          closeContextMenu={closeContextMenu}
-          _id={contextMenu._id}
-          title={contextMenu.title}
-          startTime={contextMenu.startTime}
-          endTime={contextMenu.endTime}
-          right={contextMenu.right}
-          down={contextMenu.down}
-        />
-      )}
     </div>
   );
 };

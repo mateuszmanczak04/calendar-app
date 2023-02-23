@@ -3,9 +3,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useEventsContext } from '../../../context/useEventsContext';
 import styles from './AddEvent.module.scss';
-import DateAndTimePicker from './DateAndTimePicker';
+import DateAndTimePicker from '../(date)/DateAndTimePicker';
 import { MdClose } from 'react-icons/md';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useDateContext } from '../../../context/useDateContext';
 
 const AddEvent = ({ close }: { close: () => void }) => {
   const [title, setTitle] = useState<string>('');
@@ -13,6 +13,17 @@ const AddEvent = ({ close }: { close: () => void }) => {
   const [endTime, setEndTime] = useState<Date>(new Date());
   const [color, setColor] = useState('#AB0A8D');
   const { addEvent } = useEventsContext();
+  const { currentDate: currentDateFromContext } = useDateContext();
+  const [currentDate, setCurrentDate] = useState<Date>(currentDateFromContext);
+
+  useEffect(() => {
+    const now = Date.now();
+    const newDate = new Date(now);
+    newDate.setFullYear(currentDateFromContext.getFullYear());
+    newDate.setMonth(currentDateFromContext.getMonth());
+    newDate.setDate(currentDateFromContext.getDate());
+    setCurrentDate(newDate);
+  }, [currentDateFromContext]);
 
   const handleSubmit = async () => {
     const startTimeNumber =
@@ -39,11 +50,10 @@ const AddEvent = ({ close }: { close: () => void }) => {
     window.addEventListener('keydown', escHandler);
 
     return () => window.removeEventListener('keydown', escHandler);
-  }, []);
+  }, [close]);
 
   return (
     <div className={styles.container}>
-      {/* <div className={styles.backdrop} onClick={close}></div> */}
       <div className={styles.content}>
         <div className={styles.top}>
           <input
@@ -60,17 +70,21 @@ const AddEvent = ({ close }: { close: () => void }) => {
           <div className={styles.label}>
             <h2>Start Time</h2>
             <DateAndTimePicker
-              setDate={useCallback((date) => {
+              setDate={useCallback((date: Date) => {
                 setStartTime(date);
               }, [])}
+              date={currentDate}
+              now={true}
             />
           </div>
           <div className={styles.label}>
             <h2>End Time</h2>
             <DateAndTimePicker
-              setDate={useCallback((date) => {
+              setDate={useCallback((date: Date) => {
                 setEndTime(date);
               }, [])}
+              date={currentDate}
+              now={true}
             />
           </div>
         </div>

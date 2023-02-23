@@ -9,18 +9,37 @@
   user-select: none;
   overflow: hidden;
   container-type: size;
+  border-radius: 8px;
 
   .title {
-    max-width: calc(100% - 24px);
+    max-width: calc(100% - 4px);
     position: absolute;
     background: var(--black75);
     color: white;
     padding: 4px 16px;
     border-radius: 4px;
-    left: 12px;
-    top: 12px;
+    left: 2px;
+    top: 40px;
     overflow-wrap: break-word;
     font-size: 20px;
+  }
+
+  button {
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    width: calc(100% - 4px);
+    background: var(--white);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    font-size: 24px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   }
 
   .drag {
@@ -31,6 +50,16 @@
     position: absolute;
     cursor: ns-resize;
   }
+}
+
+.eventMenu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 200;
 }
 
 @container (max-width: 300px) {

@@ -7,7 +7,6 @@ import {
 } from 'react-icons/ai';
 import { useDateContext } from '../../../context/useDateContext';
 import { useLayoutContext } from '../../../context/useLayoutContext';
-import { getDateSlug } from '../../../lib/getDateSlug';
 import styles from './DateSwitcher.module.scss';
 import moment from 'moment';
 

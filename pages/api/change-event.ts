@@ -13,9 +13,11 @@ export default async function handler(
 
     const {
       _id,
+      title,
       startDate,
       endDate,
-    }: { _id: string; startDate: Date; endDate: Date } = req.body;
+    }: { _id: string; title: string; startDate: Date; endDate: Date } =
+      req.body;
     const db = await connectToDatabase();
 
     const exists = await db
@@ -30,13 +32,14 @@ export default async function handler(
       { _id: new ObjectId(_id) },
       {
         $set: {
+          title: title,
           startTime: new Date(startDate).getTime(),
           endTime: new Date(endDate).getTime(),
         },
       }
     );
 
-    return res.status(200).json({ message: 'Date changed.' });
+    return res.status(200).json({ message: 'Event changed.' });
   } catch (err) {
     return res.status(500).json({ message: 'Server error' });
   }

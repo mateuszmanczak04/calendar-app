@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useDateContext } from '../../context/useDateContext';
+import React, { useEffect, useRef, useState } from 'react';
 import { useEventsContext } from '../../context/useEventsContext';
 import { useLayoutContext } from '../../context/useLayoutContext';
 import styles from './EventBlock.module.scss';
+import { BiMenu } from 'react-icons/bi';
+import EditEvent from './(editEvent)/EditEvent';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type Props = {
   yOffset: number;
@@ -15,14 +17,6 @@ type Props = {
   startTime: number;
   endTime: number;
   currentDate: Date;
-  onContextMenu: (
-    e: React.MouseEvent,
-    _id: string,
-    yOffset: number,
-    title: string,
-    startTime: number,
-    endTime: number
-  ) => void;
 };
 
 const EventBlock = ({
@@ -33,7 +27,6 @@ const EventBlock = ({
   _id,
   startTime,
   endTime,
-  onContextMenu,
   currentDate,
 }: Props) => {
   const [height, setHeight] = useState(initialHeight);
@@ -44,7 +37,8 @@ const EventBlock = ({
   const [movingBottom, setMovingBottom] = useState<boolean>(false);
   const [displayEnd, setDisplayEnd] = useState(true);
   const [displayStart, setDisplayStart] = useState(true);
-  const { submitChangeDate, changeDate } = useEventsContext();
+  const { change } = useEventsContext();
+  const [editing, setEditing] = useState<boolean>(false);
 
   useEffect(() => {
     const tomorrow = new Date(currentDate);
@@ -71,46 +65,6 @@ const EventBlock = ({
   const handleMouseDownBottom = (e: React.MouseEvent<HTMLDivElement>) => {
     setMovingBottom(true);
   };
-
-  // todo snapping hours
-  // const snapTop = useCallback(() => {
-  //   const block = ref.current!;
-  //   const hourGrid = ref.current!.parentElement!;
-  //   let fromTop =
-  //     block.getBoundingClientRect()?.top - hourGrid.getBoundingClientRect().top;
-  //   const snapAmount = rowHeight / 4;
-  //   const rest = fromTop % snapAmount;
-
-  //   if (rest >= snapAmount / 2) {
-  //     // snap to bottom
-  //     const needToAdd = snapAmount - rest;
-  //     setYOffset((prev) => prev + needToAdd);
-  //     setHeight((prev) => prev - needToAdd);
-  //   } else {
-  //     // snap to top
-  //     setYOffset((prev) => prev - rest);
-  //     setHeight((prev) => prev + rest);
-  //   }
-  // }, [rowHeight]);
-
-  // const snapBottom = useCallback(() => {
-  //   const block = ref.current!;
-  //   const hourGrid = ref.current!.parentElement!;
-  //   let fromTop =
-  //     block.getBoundingClientRect()?.top - hourGrid.getBoundingClientRect().top;
-  //   fromTop += height;
-  //   const snapAmount = rowHeight / 4;
-  //   const rest = fromTop % snapAmount;
-
-  //   if (rest >= snapAmount / 2) {
-  //     // snap to bottom
-  //     const needToAdd = snapAmount - rest;
-  //     setHeight((prev) => prev + needToAdd);
-  //   } else {
-  //     // snap to top
-  //     setHeight((prev) => prev + -rest);
-  //   }
-  // }, [height, rowHeight]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -155,8 +109,7 @@ const EventBlock = ({
         );
       }
 
-      changeDate(_id, startDate, endDate);
-      submitChangeDate(_id, startDate, endDate);
+      change(_id, title, startDate, endDate);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -168,8 +121,8 @@ const EventBlock = ({
     };
   }, [
     _id,
-    changeDate,
-    submitChangeDate,
+    change,
+    title,
     startTime,
     endTime,
     height,
@@ -182,34 +135,54 @@ const EventBlock = ({
   ]);
 
   return (
-    <div
-      className={styles.event}
-      style={{
-        borderLeft: '2px solid ' + color,
-        borderRight: '2px solid ' + color,
-        background: color + 'aa',
-        top: yOffset + 'px',
-        height: height + 'px',
-        minHeight: '16px',
-      }}
-      onContextMenu={(e) =>
-        onContextMenu(e, _id, yOffset, title, startTime, endTime)
-      }
-      ref={ref}>
-      {displayStart && (
-        <div
-          className={styles.drag}
-          style={{ top: 0, background: color + 'aa' }}
-          onMouseDown={handleMouseDownTop}></div>
-      )}
-      <p className={styles.title}>{title}</p>
-      {displayEnd && (
-        <div
-          className={styles.drag}
-          style={{ bottom: 0, background: color + 'aa' }}
-          onMouseDown={handleMouseDownBottom}></div>
-      )}
-    </div>
+    <>
+      <div
+        className={styles.event}
+        style={{
+          borderLeft: '2px solid ' + color,
+          borderRight: '2px solid ' + color,
+          background: color + 'aa',
+          top: yOffset + 'px',
+          height: height + 'px',
+          minHeight: '16px',
+        }}
+        ref={ref}>
+        {displayStart && (
+          <div
+            className={styles.drag}
+            style={{ top: 0, background: color + 'aa' }}
+            onMouseDown={handleMouseDownTop}></div>
+        )}
+        <p className={styles.title}>{title}</p>
+        <button onClick={() => setEditing(true)}>
+          <BiMenu />
+        </button>
+        {displayEnd && (
+          <div
+            className={styles.drag}
+            style={{ bottom: 0, background: color + 'aa' }}
+            onMouseDown={handleMouseDownBottom}></div>
+        )}
+      </div>
+      <AnimatePresence>
+        {editing && (
+          <motion.div
+            className={styles.eventMenu}
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ duration: 0.5 }}>
+            <EditEvent
+              _id={_id}
+              title={title}
+              startTime={startTime}
+              endTime={endTime}
+              closeMenu={() => setEditing(false)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

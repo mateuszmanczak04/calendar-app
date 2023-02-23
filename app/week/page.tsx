@@ -12,7 +12,6 @@ const WeekPage = () => {
   useEffect(() => {
     const slug = getDateSlug(currentDate);
     router.replace(`/week/${slug}`);
-    // window.history.replaceState(null, 'Calendar App', `/week/${slug}`);
   }, [router, currentDate]);
 
   return <div></div>;

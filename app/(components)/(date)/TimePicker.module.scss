@@ -9,12 +9,17 @@
   gap: 4px;
   display: flex;
   gap: 8px;
+  background: var(--black5);
+  transition: 0.2s ease;
+
+  &:hover {
+    background: var(--black10);
+  }
 
   .column {
     height: 128px;
     overflow-y: scroll;
     overflow-x: hidden;
-    border: 1px solid var(--black50);
     border-radius: 8px;
     scroll-snap-type: block;
     transition: 0.2s ease;

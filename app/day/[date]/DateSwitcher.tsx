@@ -43,7 +43,6 @@ const RightLeft = () => {
         }}>
         <AiOutlineArrowLeft />
       </button>
-      {/* <p>{currentDate?.toLocaleDateString('en-US')}</p> */}
       <p>{moment(currentDate).format('YYYY-MM-DD')}</p>
       <button
         onClick={() => {

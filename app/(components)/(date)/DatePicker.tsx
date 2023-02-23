@@ -19,13 +19,13 @@ const months = [
 
 const DatePicker = ({
   setDate,
-  initialDate,
+  date,
 }: {
-  setDate: (date: Date) => void;
-  initialDate: Date;
+  setDate: (year: number, month: number, day: number) => void;
+  date: Date;
 }) => {
   const [days, setDays] = useState<JSX.Element[]>([]);
-  const [currentDate, setCurrentDate] = useState<Date>(initialDate);
+  const [currentDate, setCurrentDate] = useState<Date>(date);
 
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()
@@ -142,7 +142,11 @@ const DatePicker = ({
   useEffect(() => {
     setCurrentMonth(currentDate.getMonth());
     setCurrentYear(currentDate.getFullYear());
-    setDate(currentDate);
+    setDate(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
+    );
   }, [currentDate, setDate]);
 
   const handlePrevMonth = () => {

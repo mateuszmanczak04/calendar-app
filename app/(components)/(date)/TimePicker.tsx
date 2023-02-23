@@ -1,38 +1,37 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  UIEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './TimePicker.module.scss';
 
 const TimePicker = ({
-  setTime,
-  initialDate,
+  setHourAndMinute,
+  date,
+  now,
 }: {
-  setTime: (date: Date) => void;
-  initialDate: Date;
+  setHourAndMinute: (hour: number, minute: number) => void;
+  date: Date;
+  now: boolean;
 }) => {
-  const [hour, setHour] = useState<number>(0);
-  const [minute, setMinute] = useState<number>(0);
+  const [hour, setHour] = useState<number>(
+    now ? new Date().getHours() : date.getHours()
+  );
+  const [minute, setMinute] = useState<number>(
+    now ? new Date().getMinutes() : date.getMinutes()
+  );
   const hourRef = useRef<HTMLDivElement>(null);
   const minuteRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newTime = new Date();
-    newTime.setHours(hour, minute);
-    setTime(newTime);
-  }, [hour, minute, setTime]);
+    setHourAndMinute(hour, minute);
+  }, [hour, minute, setHourAndMinute]);
 
+  // set initial scroll levels
   useEffect(() => {
     if (hourRef.current) {
-      hourRef.current.scrollTop = 96;
+      hourRef.current.scrollTop = 64 * hour + 96;
     }
     if (minuteRef.current) {
-      minuteRef.current.scrollTop = 96;
+      minuteRef.current.scrollTop = 64 * minute + 96;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleScrollHour = () => {
@@ -159,6 +158,7 @@ const TimePicker = ({
           01
         </p>
       </div>
+      <p>:</p>
       <div
         className={styles.column}
         ref={minuteRef}
@@ -359,5 +359,5 @@ const TimePicker = ({
     </div>
   );
 };
-55555555;
+
 export default TimePicker;

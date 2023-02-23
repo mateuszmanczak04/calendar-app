@@ -17,7 +17,6 @@ const TopBar = () => {
         <Link href='/week'>Week</Link>
         <Link href='/month'>Month</Link>
       </div>
-      {/* <input type='text' placeholder='Search' /> */}
 
       <AnimatePresence>
         {isAddEventOpen && (

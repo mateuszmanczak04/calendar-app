@@ -19,16 +19,19 @@ export const EventsContext = createContext<{
   events: Event[];
   addEvent: (event: Event) => void;
   removeEvent: (_id: string) => void;
-  renameEvent: (_id: string, title: string) => void;
-  changeDate: (_id: string, startDate: Date, endDate: Date) => void;
-  submitChangeDate: (_id: string, startDate: Date, endDate: Date) => void;
+  submitChanges: (
+    _id: string,
+    title: string,
+    startDate: Date,
+    endDate: Date
+  ) => void;
+  change: (_id: string, title: string, startDate: Date, endDate: Date) => void;
 }>({
   events: [],
   addEvent: () => {},
   removeEvent: () => {},
-  renameEvent: () => {},
-  changeDate: () => {},
-  submitChangeDate: () => {},
+  submitChanges: () => {},
+  change: () => {},
 });
 
 type Props = {
@@ -74,57 +77,6 @@ export const EventsContextProvider = ({ children }: Props) => {
     });
   };
 
-  const renameEvent = async (_id: string, title: string) => {
-    setEvents((prevEvents) =>
-      prevEvents.map((e) => {
-        if (e._id === _id) {
-          return { ...e, title };
-        }
-        return e;
-      })
-    );
-
-    await fetch('/api/rename-event', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ _id, title }),
-    });
-  };
-
-  const changeDate = useCallback(
-    async (_id: string, startDate: Date, endDate: Date) => {
-      setEvents((prevEvents) =>
-        prevEvents.map((e) => {
-          if (e._id === _id) {
-            return {
-              ...e,
-              startTime: startDate.getTime(),
-              endTime: endDate.getTime(),
-            };
-          }
-          return e;
-        })
-      );
-    },
-    []
-  );
-
-  const submitChangeDate = async (
-    _id: string,
-    startDate: Date,
-    endDate: Date
-  ) => {
-    await fetch('/api/change-date', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ _id, startDate, endDate }),
-    });
-  };
-
   useEffect(() => {
     const fetchAllEvents = async () => {
       const res = await fetch('/api/get-all-events', {
@@ -143,15 +95,51 @@ export const EventsContextProvider = ({ children }: Props) => {
     fetchAllEvents();
   }, []);
 
+  const change = async (
+    _id: string,
+    title: string,
+    startDate: Date,
+    endDate: Date
+  ) => {
+    // locally
+    setEvents((prevEvents) =>
+      prevEvents.map((e) => {
+        if (e._id === _id) {
+          return {
+            ...e,
+            title,
+            startTime: startDate.getTime(),
+            endTime: endDate.getTime(),
+          };
+        }
+        return e;
+      })
+    );
+  };
+
+  const submitChanges = async (
+    _id: string,
+    title: string,
+    startDate: Date,
+    endDate: Date
+  ) => {
+    await fetch('/api/change-event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ _id, title, startDate, endDate }),
+    });
+  };
+
   return (
     <EventsContext.Provider
       value={{
         events,
         addEvent,
         removeEvent,
-        renameEvent,
-        changeDate,
-        submitChangeDate,
+        submitChanges,
+        change,
       }}>
       {children}
     </EventsContext.Provider>

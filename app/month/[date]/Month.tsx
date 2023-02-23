@@ -2,7 +2,6 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { useDateContext } from '../../../context/useDateContext';
 import { useEventsContext } from '../../../context/useEventsContext';
 import useWindowWidth from '../../../hooks/useWindowWidth';
 import { getDateSlug } from '../../../lib/getDateSlug';

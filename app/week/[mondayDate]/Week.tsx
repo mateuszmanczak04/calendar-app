@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import styles from './Week.module.scss';
 import SmallCalendar from './SmallCalendar';
-// import DayHours from './DayHours';
 import DateSwitcher from './DateSwitcher';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';
