@@ -4,6 +4,8 @@ import { useEventsContext } from '../../../context/useEventsContext';
 import DateAndTimePicker from '../(date)/DateAndTimePicker';
 import styles from './EditEvent.module.scss';
 import { AiFillDelete } from 'react-icons/ai';
+import { AnimatePresence, motion } from 'framer-motion';
+import DeleteModal from './DeleteModal';
 
 type Props = {
   closeMenu: () => void;
@@ -19,6 +21,7 @@ const EventMenu = ({ closeMenu, _id, title, startTime, endTime }: Props) => {
   const [startDate, setStartDate] = useState(new Date(startTime));
   const [endDate, setEndDate] = useState(new Date(endTime));
   const [canSave, setCanSave] = useState<boolean>(true);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const handleRemove = () => {
     removeEvent(_id);
@@ -59,7 +62,9 @@ const EventMenu = ({ closeMenu, _id, title, startTime, endTime }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <button className={styles.delete} onClick={handleRemove}>
+        <button
+          className={styles.delete}
+          onClick={() => setShowDeleteModal(true)}>
           <AiFillDelete />
         </button>
         <button className={styles.close} onClick={closeMenu}>
@@ -93,6 +98,21 @@ const EventMenu = ({ closeMenu, _id, title, startTime, endTime }: Props) => {
       <button onClick={handleSave} className={styles.save} disabled={!canSave}>
         Save
       </button>
+
+      <AnimatePresence>
+        {showDeleteModal && (
+          <motion.div
+            className={styles.deleteModal}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}>
+            <DeleteModal
+              cancel={() => setShowDeleteModal(false)}
+              deleteEvent={handleRemove}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
