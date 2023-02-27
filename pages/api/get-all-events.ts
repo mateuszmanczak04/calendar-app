@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from '../../lib/db';
+import dbConnect from '../../lib/dbConnect';
+import Event from '../../models/Event';
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,13 +11,9 @@ export default async function handler(
       return res.status(400).json({ message: 'Invalid method.' });
     }
 
-    const db = await connectToDatabase();
+    await dbConnect();
 
-    const events = await db
-      .collection('events')
-      .find()
-      .sort({ startTime: 1 })
-      .toArray();
+    const events = await Event.find().sort({ startTime: 1 });
 
     return res.status(200).json({ events });
   } catch (err) {

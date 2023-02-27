@@ -7,6 +7,7 @@ import styles from './EventBlock.module.scss';
 import { BiMenu } from 'react-icons/bi';
 import EditEvent from './(editEvent)/EditEvent';
 import { AnimatePresence, motion } from 'framer-motion';
+import { BsArrowsMove } from 'react-icons/bs';
 
 type Props = {
   yOffset: number;
@@ -37,7 +38,7 @@ const EventBlock = ({
   const [movingBottom, setMovingBottom] = useState<boolean>(false);
   const [displayEnd, setDisplayEnd] = useState(true);
   const [displayStart, setDisplayStart] = useState(true);
-  const { change } = useEventsContext();
+  const { change, submitChanges } = useEventsContext();
   const [editing, setEditing] = useState<boolean>(false);
 
   useEffect(() => {
@@ -110,6 +111,7 @@ const EventBlock = ({
       }
 
       change(_id, title, startDate, endDate);
+      submitChanges(_id, title, startDate, endDate);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -122,6 +124,7 @@ const EventBlock = ({
   }, [
     _id,
     change,
+    submitChanges,
     title,
     startTime,
     endTime,
@@ -141,7 +144,7 @@ const EventBlock = ({
         style={{
           borderLeft: '2px solid ' + color,
           borderRight: '2px solid ' + color,
-          background: color + 'aa',
+          background: color,
           top: yOffset + 'px',
           height: height + 'px',
           minHeight: '16px',

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from '../../lib/db';
+import dbConnect from '../../lib/dbConnect';
+import Event from '../../models/Event';
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,18 +19,9 @@ export default async function handler(
         .json({ message: 'Invalid title, color, startTime or endTime' });
     }
 
-    const db = await connectToDatabase();
+    await dbConnect();
 
-    const eventId = (
-      await db.collection('events').insertOne({
-        title,
-        startTime,
-        endTime,
-        color,
-      })
-    ).insertedId;
-
-    const event = await db.collection('events').findOne({ _id: eventId });
+    const event = await Event.create({ title, startTime, endTime, color });
 
     return res
       .status(200)

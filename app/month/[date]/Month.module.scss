@@ -70,9 +70,8 @@
       display: flex;
 
       .day {
-        cursor: pointer;
         flex: 1;
-        height: 64px;
+        height: 80px;
         text-align: center;
         padding: 8px;
         display: flex;
@@ -86,12 +85,25 @@
 
         .number {
           font-size: 20px;
+          cursor: pointer;
+          transition: 0.2s ease;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto;
+
+          &:hover {
+            background: var(--black25);
+          }
         }
 
         .events {
           margin-top: 8px;
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
           gap: 4px;
           overflow-y: scroll;
 
@@ -103,6 +115,10 @@
             min-height: 12px;
           }
         }
+      }
+
+      .hoverPreview {
+        // position: absolute;
       }
     }
   }
@@ -126,6 +142,10 @@
       .row {
         .day {
           height: 128px;
+
+          .events {
+            flex-direction: column;
+          }
         }
       }
     }

@@ -1,7 +1,9 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Loading from '../(components)/Loading';
 import { useDateContext } from '../../context/useDateContext';
 import { getDateSlug } from '../../lib/getDateSlug';
 
@@ -12,9 +14,7 @@ const WeekPage = () => {
   useEffect(() => {
     const slug = getDateSlug(currentDate);
     router.replace(`/week/${slug}`);
-  }, [router, currentDate]);
-
-  return <div></div>;
+  }, [currentDate, router]);
 };
 
 export default WeekPage;

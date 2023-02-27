@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from '../../../lib/db';
+import dbConnect from '../../../lib/dbConnect';
+import Event from '../../../models/Event';
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,11 +17,9 @@ export default async function handler(
       return res.status(400).json({ message: 'Invalid _id' });
     }
 
-    const db = await connectToDatabase();
+    dbConnect();
 
-    await db
-      .collection('events')
-      .deleteOne({ _id: new ObjectId(_id.toString()) });
+    await Event.findByIdAndDelete(_id);
 
     return res.status(200).json({ message: 'Event removed' });
   } catch (err) {

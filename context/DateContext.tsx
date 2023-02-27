@@ -1,12 +1,11 @@
-import { useRouter } from 'next/navigation';
+'use client';
+
 import React, {
   createContext,
   Dispatch,
   SetStateAction,
-  useEffect,
   useState,
 } from 'react';
-import { getDateSlug } from '../lib/getDateSlug';
 
 export const DateContext = createContext<{
   currentDate: Date;

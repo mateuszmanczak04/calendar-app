@@ -1,6 +1,9 @@
 'use client';
 
-import React from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+import Loading from '../../(components)/Loading';
 import Day from './Day';
 
 type PageProps = {
@@ -10,7 +13,18 @@ type PageProps = {
 };
 
 const DayPage = (props: PageProps) => {
-  return <Day date={props.params.date} />;
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.replace('/login');
+    }
+  }, [status, router]);
+
+  if (status === 'authenticated') return <Day date={props.params.date} />;
+
+  return null;
 };
 
 export default DayPage;

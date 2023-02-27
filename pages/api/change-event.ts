@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from '../../lib/db';
+import dbConnect from '../../lib/dbConnect';
+import Event from '../../models/Event';
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,26 +18,23 @@ export default async function handler(
       endDate,
     }: { _id: string; title: string; startDate: Date; endDate: Date } =
       req.body;
-    const db = await connectToDatabase();
 
-    const exists = await db
-      .collection('events')
-      .findOne({ _id: new ObjectId(_id) });
+    await dbConnect();
 
-    if (!exists) {
+    const event = await Event.findById(_id);
+
+    // if doesn't exist in database
+    if (!event) {
       return res.status(400).json({ message: 'Invalid _id' });
     }
 
-    await db.collection('events').findOneAndUpdate(
-      { _id: new ObjectId(_id) },
-      {
-        $set: {
-          title: title,
-          startTime: new Date(startDate).getTime(),
-          endTime: new Date(endDate).getTime(),
-        },
-      }
-    );
+    await Event.findByIdAndUpdate(_id, {
+      $set: {
+        title: title,
+        startTime: new Date(startDate).getTime(),
+        endTime: new Date(endDate).getTime(),
+      },
+    });
 
     return res.status(200).json({ message: 'Event changed.' });
   } catch (err) {

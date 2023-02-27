@@ -1,10 +1,6 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+'use client';
+
+import React, { createContext, useEffect, useState } from 'react';
 import { __String } from 'typescript';
 
 type Event = {

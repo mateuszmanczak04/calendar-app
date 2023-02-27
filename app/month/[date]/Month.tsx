@@ -1,4 +1,5 @@
 'use client';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
@@ -22,6 +23,14 @@ const monthNames = [
   'December',
 ];
 
+type Event = {
+  _id: string;
+  title: string;
+  color: string;
+  endTime: number;
+  startTime: number;
+};
+
 let weekdays = [
   'Monday',
   'Tuesday',
@@ -38,20 +47,14 @@ const Month = ({ date: initialDate }: { date: string }) => {
   const [weeks, setWeeks] = useState<
     ({
       day: Date;
-      events: {
-        _id: string;
-        title: string;
-        color: string;
-        endTime: number;
-        startTime: number;
-      }[];
+      events: Event[];
     } | null)[][]
   >([]);
   const { events } = useEventsContext();
   const width = useWindowWidth();
 
   useEffect(() => {
-    if (screen.width >= 900) {
+    if (width >= 900) {
       weekdays = [
         'Monday',
         'Tuesday',
@@ -107,6 +110,7 @@ const Month = ({ date: initialDate }: { date: string }) => {
         break;
     }
 
+    // add current month days
     for (let i = 1; i <= daysInMonth; i++) {
       days.push(
         new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i)
@@ -141,13 +145,7 @@ const Month = ({ date: initialDate }: { date: string }) => {
 
     const weeks: ({
       day: Date;
-      events: {
-        _id: string;
-        title: string;
-        color: string;
-        endTime: number;
-        startTime: number;
-      }[];
+      events: Event[];
     } | null)[][] = [[]];
     let currentWeek = 0;
 
@@ -157,20 +155,23 @@ const Month = ({ date: initialDate }: { date: string }) => {
           currentWeek++;
           weeks.push([]);
         }
-        const dayEvents: {
-          _id: string;
-          title: string;
-          color: string;
-          endTime: number;
-          startTime: number;
-        }[] = [];
+        const dayEvents: Event[] = [];
         events.forEach((e) => {
-          const eDate = new Date(e.startTime);
-          eDate.setHours(0, 0, 0, 0);
+          // compare midnights of current day and event
+          const eventDateStart = new Date(e.startTime);
+          eventDateStart.setHours(0, 0, 0, 0);
+
+          const eventDateEnd = new Date(e.endTime);
+          eventDateEnd.setHours(0, 0, 0, 0);
+
           const dayDate = day;
           dayDate.setHours(0, 0, 0, 0);
-          // if event starts in current day
-          if (eDate.getTime() === dayDate.getTime()) {
+
+          // add event to every day that it exists
+          if (
+            eventDateStart.getTime() <= dayDate.getTime() &&
+            eventDateEnd.getTime() >= dayDate.getTime()
+          ) {
             dayEvents.push(e);
           }
         });
@@ -230,6 +231,7 @@ const Month = ({ date: initialDate }: { date: string }) => {
         </div>
       </div>
       <div>
+        {/* header - monday, tuesday, wednesday...§ */}
         <div className={styles.header}>
           {weekdays.map((day) => (
             <div className={styles.dayName} key={day}>
@@ -237,18 +239,21 @@ const Month = ({ date: initialDate }: { date: string }) => {
             </div>
           ))}
         </div>
+        {/* days 1-30... */}
         <div className={styles.days}>
           {weeks.map((week, index) => (
+            // one row with single week
             <div className={styles.row} key={index}>
               {week.map((day, i) => (
-                <div
-                  className={styles.day}
-                  key={i}
-                  onClick={() => day && goToDay(day.day)}>
-                  <p className={styles.number}>{day && day.day.getDate()}</p>
-                  <div
-                    className={styles.events}
-                    style={{ flexDirection: width >= 600 ? 'column' : 'row' }}>
+                <div className={styles.day} key={i}>
+                  {/* day number in paragraph */}
+                  <p
+                    className={styles.number}
+                    onClick={() => day && goToDay(day.day)}>
+                    {day && day.day.getDate()}
+                  </p>
+                  {/* day events */}
+                  <div className={styles.events}>
                     {day &&
                       day.events.map((e) => (
                         <p

@@ -78,7 +78,6 @@ const Events = ({ currentDate }: Props) => {
             startTime={startTime}
             endTime={endTime}
             currentDate={currentDate}
-            // openEditMenu={openEditMenu}
           />
         );
       })}
