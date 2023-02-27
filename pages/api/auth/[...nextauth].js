@@ -4,11 +4,11 @@ import dbConnect from '../../../lib/dbConnect';
 import User from '../../../models/User';
 import bcrypt from 'bcryptjs';
 
-const authOptions: NextAuthOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
-      async authorize(credentials, req) {
-        const { email, password } = credentials as any;
+      async authorize() {
+        const { email, password } = credentials;
 
         await dbConnect();
 
