@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 const authOptions = {
   providers: [
     CredentialsProvider({
-      async authorize() {
+      async authorize(credentials) {
         const { email, password } = credentials;
 
         await dbConnect();
