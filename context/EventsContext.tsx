@@ -2,6 +2,7 @@
 
 import React, { createContext, useEffect, useState } from 'react';
 import { __String } from 'typescript';
+import { useLoadingContext } from './useLoadingContext';
 
 type Event = {
   title: string;
@@ -36,6 +37,7 @@ type Props = {
 
 export const EventsContextProvider = ({ children }: Props) => {
   const [events, setEvents] = useState<Event[]>([]);
+  const { loading, setTrue, setFalse } = useLoadingContext();
 
   const addEvent = async (event: Event) => {
     setEvents((prev) => [...prev, event]);
@@ -75,6 +77,7 @@ export const EventsContextProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const fetchAllEvents = async () => {
+      setTrue();
       const res = await fetch('/api/get-all-events', {
         method: 'GET',
       });
@@ -86,10 +89,12 @@ export const EventsContextProvider = ({ children }: Props) => {
       }
 
       setEvents(json.events);
+      console.log('fetched');
+      setFalse();
     };
 
     fetchAllEvents();
-  }, []);
+  }, [setFalse, setTrue]);
 
   const change = async (
     _id: string,
