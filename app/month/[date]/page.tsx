@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import Loading from '../../(components)/Loading';
 import Month from './Month';
 
 type PageProps = {
