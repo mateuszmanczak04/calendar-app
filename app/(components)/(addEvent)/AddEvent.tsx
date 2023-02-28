@@ -6,6 +6,7 @@ import styles from './AddEvent.module.scss';
 import DateAndTimePicker from '../(date)/DateAndTimePicker';
 import { MdClose } from 'react-icons/md';
 import { useDateContext } from '../../../context/useDateContext';
+import { useSession } from 'next-auth/react';
 
 const AddEvent = ({ close }: { close: () => void }) => {
   const [title, setTitle] = useState<string>('');
@@ -15,6 +16,7 @@ const AddEvent = ({ close }: { close: () => void }) => {
   const { addEvent } = useEventsContext();
   const { currentDate: currentDateFromContext } = useDateContext();
   const [currentDate, setCurrentDate] = useState<Date>(currentDateFromContext);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const now = Date.now();
@@ -30,13 +32,16 @@ const AddEvent = ({ close }: { close: () => void }) => {
       startTime.getTime() - (startTime.getTime() % 300000);
     const endTimeNumber = endTime.getTime() - (endTime.getTime() % 300000);
 
-    addEvent({
-      _id: Math.random().toString(),
-      title,
-      startTime: startTimeNumber,
-      endTime: endTimeNumber,
-      color,
-    });
+    if (session && session.user && session.user.email) {
+      addEvent({
+        _id: Math.random().toString(),
+        title,
+        startTime: startTimeNumber,
+        endTime: endTimeNumber,
+        color,
+        authorEmail: session.user.email,
+      });
+    }
     close();
   };
 

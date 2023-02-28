@@ -25,7 +25,7 @@ const authOptions = {
           throw new Error('Invalid credentials');
         }
 
-        return { email: user.email, _id: user._id };
+        return { email: user.email };
       },
     }),
   ],

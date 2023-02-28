@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../lib/dbConnect';
 import Event from '../../models/Event';
+import User from '../../models/User';
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,17 +12,25 @@ export default async function handler(
       return res.status(400).json({ message: 'Invalid method.' });
     }
 
-    const { title, startTime, endTime, color } = req.body;
+    const { title, startTime, endTime, color, authorEmail } = req.body;
 
-    if (!title || !startTime || !endTime || !color) {
-      return res
-        .status(400)
-        .json({ message: 'Invalid title, color, startTime or endTime' });
+    if (!title || !startTime || !endTime || !color || !authorEmail) {
+      return res.status(400).json({
+        message: 'Invalid title, color, startTime, endTime or authorEmail',
+      });
     }
 
     await dbConnect();
 
-    const event = await Event.create({ title, startTime, endTime, color });
+    const user = await User.findOne({ email: authorEmail });
+
+    const event = await Event.create({
+      title,
+      startTime,
+      endTime,
+      color,
+      author: user._id,
+    });
 
     return res
       .status(200)

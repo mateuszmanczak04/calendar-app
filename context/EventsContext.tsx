@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import React, { createContext, useEffect, useState } from 'react';
 import { __String } from 'typescript';
 import { useLoadingContext } from './useLoadingContext';
@@ -10,6 +11,7 @@ type Event = {
   endTime: number;
   _id: string;
   color: string;
+  authorEmail: string;
 };
 
 export const EventsContext = createContext<{
@@ -38,6 +40,7 @@ type Props = {
 export const EventsContextProvider = ({ children }: Props) => {
   const [events, setEvents] = useState<Event[]>([]);
   const { loading, setTrue, setFalse } = useLoadingContext();
+  const { data: session } = useSession();
 
   const addEvent = async (event: Event) => {
     setEvents((prev) => [...prev, event]);
@@ -52,6 +55,7 @@ export const EventsContextProvider = ({ children }: Props) => {
         startTime: event.startTime,
         endTime: event.endTime,
         color: event.color,
+        authorEmail: event.authorEmail,
       }),
     });
 
@@ -78,7 +82,7 @@ export const EventsContextProvider = ({ children }: Props) => {
   useEffect(() => {
     const fetchAllEvents = async () => {
       setTrue();
-      const res = await fetch('/api/get-all-events', {
+      const res = await fetch('/api/get-events/' + session?.user?.email, {
         method: 'GET',
       });
 
@@ -89,12 +93,11 @@ export const EventsContextProvider = ({ children }: Props) => {
       }
 
       setEvents(json.events);
-      console.log('fetched');
       setFalse();
     };
 
     fetchAllEvents();
-  }, [setFalse, setTrue]);
+  }, [setFalse, setTrue, session]);
 
   const change = async (
     _id: string,
