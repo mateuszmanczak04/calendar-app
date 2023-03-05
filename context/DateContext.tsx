@@ -40,9 +40,9 @@ export const DateContextProvider = ({
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   useEffect(() => {
-    // if (localStorage.currentDate) {
-    setCurrentDate(new Date(localStorage.currentDate));
-    // }
+    if (localStorage.currentDate) {
+      setCurrentDate(new Date(localStorage.currentDate));
+    }
   }, []);
 
   useEffect(() => {
