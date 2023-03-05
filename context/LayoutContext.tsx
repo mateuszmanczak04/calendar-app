@@ -26,6 +26,21 @@ export const LayoutContextProvider = ({ children }: Props) => {
   }, []);
 
   const handleZoomIn = () => {
+    const eventBlocks = Array.from(
+      document.querySelectorAll(
+        '.eventBlock'
+      ) as unknown as HTMLCollectionOf<HTMLElement>
+    );
+    eventBlocks.forEach((eb) => {
+      eb.style.transition = '0.2s ease';
+    });
+
+    window.setTimeout(() => {
+      eventBlocks.forEach((eb) => {
+        eb.style.transition = 'none';
+      });
+    }, 200);
+
     if (rowHeight < 128) {
       setRowHeight((prev) => prev + 8);
       localStorage.setItem('rowHeight', (rowHeight + 8).toString());
@@ -44,7 +59,7 @@ export const LayoutContextProvider = ({ children }: Props) => {
 
     window.setTimeout(() => {
       eventBlocks.forEach((eb) => {
-        eb.style.transition = '0';
+        eb.style.transition = 'none';
       });
     }, 200);
 
