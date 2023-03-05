@@ -29,8 +29,8 @@ const EventMenu = ({ closeMenu, _id, title, startTime, endTime }: Props) => {
   };
 
   const handleSave = () => {
-    change(_id, title, startDate, endDate);
-    submitChanges(_id, title, startDate, endDate);
+    change(_id, newTitle, startDate, endDate);
+    submitChanges(_id, newTitle, startDate, endDate);
     closeMenu();
   };
 
