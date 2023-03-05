@@ -6,7 +6,7 @@ const OnlyHours = () => {
   const { rowHeight } = useLayoutContext();
 
   return (
-    <div className={styles.container} style={{ height: 24 * rowHeight + 40 }}>
+    <div className={styles.container} style={{ height: 24 * rowHeight + 48 }}>
       <div className={styles.first}></div>
       <p>00:00</p>
       <p>01:00</p>

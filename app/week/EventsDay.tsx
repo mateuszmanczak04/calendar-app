@@ -32,9 +32,12 @@ const EventsDay = ({ currentDate, order, amount, transition }: Props) => {
       day = '0' + day;
     }
 
-    const weekday = weekdays[currentDate.getDay()];
+    return month + '/' + day;
+  };
 
-    return weekday + ' ' + month + '/' + day;
+  const getWeekDay = () => {
+    const weekday = weekdays[currentDate.getDay()];
+    return weekday;
   };
 
   return (
@@ -45,7 +48,10 @@ const EventsDay = ({ currentDate, order, amount, transition }: Props) => {
         left: `calc(100% / ${amount} * ${order})`,
         transition: transition,
       }}>
-      <div className={styles.weekday}>{getDateSlug()}</div>
+      <div className={styles.weekday}>
+        <p>{getWeekDay()}</p>
+        <p>{getDateSlug()}</p>
+      </div>
       <div className={styles.eventsContainer}>
         <OnlyLines />
         <Events currentDate={currentDate} />
