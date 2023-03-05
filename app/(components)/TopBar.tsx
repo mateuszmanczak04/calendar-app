@@ -5,7 +5,6 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useDateContext } from '../../context/useDateContext';
-import { getDateSlug } from '../../lib/getDateSlug';
 import AddEvent from './(addEvent)/AddEvent';
 import Loading from './Loading';
 import styles from './TopBar.module.scss';
@@ -30,9 +29,9 @@ const TopBar = () => {
         <div className={styles.bottom}>
           <button onClick={() => setIsAddEventOpen(true)}>Add an event</button>
           <div className={styles.mode}>
-            <Link href={`/day/${getDateSlug(currentDate)}`}>Day</Link>
-            <Link href={`/week/${getDateSlug(currentDate)}`}>Week</Link>
-            <Link href={`/month/${getDateSlug(currentDate)}`}>Month</Link>
+            <Link href='/day'>Day</Link>
+            <Link href='/week'>Week</Link>
+            <Link href='/month'>Month</Link>
           </div>
         </div>
       )}

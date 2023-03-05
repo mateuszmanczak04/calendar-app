@@ -4,6 +4,7 @@
   flex-direction: column;
   border-right: 1px solid var(--black25);
   border-top: 1px solid var(--black25);
+  transition: 0.2s ease;
 
   .hourRow {
     flex: 1;

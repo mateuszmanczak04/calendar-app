@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './DayHours.module.scss';
-import OnlyHours from '../../(components)/OnlyHours';
-import EventsDay from '../../(components)/EventsDay';
-import { useDateContext } from '../../../context/useDateContext';
+import OnlyHours from './OnlyHours';
+import EventsDay from './EventsDay';
+import { useDateContext } from '../../context/useDateContext';
 
 const DayHours = () => {
   const { currentDate, getDateBefore, getDateAfter } = useDateContext();

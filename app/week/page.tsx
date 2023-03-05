@@ -3,18 +3,21 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import Loading from '../(components)/Loading';
-import { useDateContext } from '../../context/useDateContext';
-import { getDateSlug } from '../../lib/getDateSlug';
+import Week from './Week';
 
 const WeekPage = () => {
+  const { status } = useSession();
   const router = useRouter();
-  const { currentDate } = useDateContext();
 
   useEffect(() => {
-    const slug = getDateSlug(currentDate);
-    router.replace(`/week/${slug}`);
-  }, [currentDate, router]);
+    if (status === 'unauthenticated') {
+      router.replace('/login');
+    }
+  }, [status, router]);
+
+  if (status === 'authenticated') return <Week />;
+
+  return null;
 };
 
 export default WeekPage;

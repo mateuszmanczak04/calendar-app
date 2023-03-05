@@ -1,0 +1,21 @@
+.container {
+  background: white;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  overflow-x: scroll;
+  flex-direction: column;
+
+  .content {
+    width: 100%;
+    min-width: 900px;
+  }
+}
+
+@media screen and (min-width: 1360px) {
+  .container {
+    .right {
+      display: block;
+    }
+  }
+}

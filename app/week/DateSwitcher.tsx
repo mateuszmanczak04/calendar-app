@@ -1,21 +1,13 @@
-'use client';
-
 import React, { useState } from 'react';
-import {
-  AiOutlineArrowLeft,
-  AiOutlineArrowRight,
-  AiOutlineMinus,
-  AiOutlinePlus,
-} from 'react-icons/ai';
-import { useDateContext } from '../../../context/useDateContext';
-import { useLayoutContext } from '../../../context/useLayoutContext';
-import { getDateSlug } from '../../../lib/getDateSlug';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+import { useDateContext } from '../../context/useDateContext';
+import { useLayoutContext } from '../../context/useLayoutContext';
 import styles from './DateSwitcher.module.scss';
 import moment from 'moment';
 
-const RightLeft = () => {
+const DateSwitcher = () => {
   const { handleZoomIn, handleZoomOut } = useLayoutContext();
-  const { currentDate, dayBack, dayAhead, getDateBefore, getDateAfter } =
+  const { currentDate, weekAhead, weekBack, getDateAfter, dayBack, dayAhead } =
     useDateContext();
 
   const [switching, setSwitching] = useState<boolean>(false);
@@ -30,37 +22,52 @@ const RightLeft = () => {
           if (switching) {
             return;
           }
-          window.history.replaceState(
-            null,
-            'Calendar App',
-            `/day/${getDateSlug(getDateBefore(currentDate, 1))}`
-          );
+          weekBack();
+          setSwitching(true);
+          setTimeout(() => {
+            setSwitching(false);
+          }, 400);
+        }}>
+        -7
+      </button>
+      <button
+        onClick={() => {
+          if (switching) {
+            return;
+          }
           dayBack();
           setSwitching(true);
           setTimeout(() => {
             setSwitching(false);
           }, 400);
         }}>
-        <AiOutlineArrowLeft />
+        -1
       </button>
-      <p>{moment(currentDate).format('YYYY-MM-DD')}</p>
       <button
         onClick={() => {
           if (switching) {
             return;
           }
-          window.history.replaceState(
-            null,
-            'Calendar App',
-            `/day/${getDateSlug(getDateAfter(currentDate, 1))}`
-          );
           dayAhead();
           setSwitching(true);
           setTimeout(() => {
             setSwitching(false);
           }, 400);
         }}>
-        <AiOutlineArrowRight />
+        +1
+      </button>
+      <button
+        onClick={() => {
+          if (switching) {
+            return;
+          }
+          weekAhead();
+          setSwitching(true);
+          setTimeout(() => {
+            setSwitching(false);
+          }, 400);
+        }}>
+        +7
       </button>
       <button onClick={handleZoomIn}>
         <AiOutlinePlus />
@@ -69,4 +76,4 @@ const RightLeft = () => {
   );
 };
 
-export default RightLeft;
+export default DateSwitcher;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEventsContext } from '../../context/useEventsContext';
 import { useLayoutContext } from '../../context/useLayoutContext';
-import EventBlock from './EventBlock';
+import EventBlock from '../(components)/EventBlock';
 import styles from './Events.module.scss';
 
 type Props = {

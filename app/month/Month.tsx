@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { useEventsContext } from '../../../context/useEventsContext';
-import useWindowWidth from '../../../hooks/useWindowWidth';
-import { getDateSlug } from '../../../lib/getDateSlug';
+import { useDateContext } from '../../context/useDateContext';
+import { useEventsContext } from '../../context/useEventsContext';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import styles from './Month.module.scss';
 
 const monthNames = [
@@ -41,8 +41,9 @@ let weekdays = [
   'Sunday',
 ];
 
-const Month = ({ date: initialDate }: { date: string }) => {
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date(initialDate));
+const Month = () => {
+  const { currentDate, monthAhead, monthBack, setCurrentDate } =
+    useDateContext();
   const router = useRouter();
   const [weeks, setWeeks] = useState<
     ({
@@ -69,15 +70,16 @@ const Month = ({ date: initialDate }: { date: string }) => {
     }
   }, [width]);
 
+  // draw calendar
   useEffect(() => {
     const firstDayOfMonth = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
       1
     );
     const lastDayOfMonth = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth() + 1,
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
       0
     );
     const daysInMonth = lastDayOfMonth.getDate();
@@ -112,9 +114,7 @@ const Month = ({ date: initialDate }: { date: string }) => {
 
     // add current month days
     for (let i = 1; i <= daysInMonth; i++) {
-      days.push(
-        new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i)
-      );
+      days.push(new Date(currentDate.getFullYear(), currentDate.getMonth(), i));
     }
 
     // add finishing empty days (next month)
@@ -182,50 +182,24 @@ const Month = ({ date: initialDate }: { date: string }) => {
     });
 
     setWeeks(weeks);
-  }, [currentMonth, events]);
-
-  const handlePrevMonth = () => {
-    setCurrentMonth((prev: Date) => {
-      const newDate = new Date(prev);
-      newDate.setMonth(prev.getMonth() - 1);
-      window.history.replaceState(
-        null,
-        'Calendar App',
-        `/month/${newDate.getFullYear()}-${newDate.getMonth() + 1}`
-      );
-      return newDate;
-    });
-  };
-
-  const handleNextMonth = () => {
-    setCurrentMonth((prev: Date) => {
-      const newDate = new Date(prev);
-      newDate.setMonth(prev.getMonth() + 1);
-      window.history.replaceState(
-        null,
-        'Calendar App',
-        `/month/${newDate.getFullYear()}-${newDate.getMonth() + 1}`
-      );
-      return newDate;
-    });
-  };
+  }, [currentDate, events]);
 
   const goToDay = (day: Date) => {
-    const slug = getDateSlug(day);
-    router.push('day/' + slug);
+    setCurrentDate(day);
+    router.push('day');
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.top}>
         <h1>
-          {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+          {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
         </h1>
         <div className={styles.buttons}>
-          <button onClick={handlePrevMonth}>
+          <button onClick={monthBack}>
             <AiOutlineLeft />
           </button>
-          <button onClick={handleNextMonth}>
+          <button onClick={monthAhead}>
             <AiOutlineRight />
           </button>
         </div>

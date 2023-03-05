@@ -5,18 +5,20 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
 const Page = () => {
-  const { data: session } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (!session) {
+    if (status === 'unauthenticated') {
       router.replace('/login');
-    } else {
-      router.replace('/week');
     }
-  }, [session, router]);
+  }, [status, router]);
 
-  return <div></div>;
+  if (status === 'authenticated') {
+    router.replace('/week');
+  }
+
+  return null;
 };
 
 export default Page;

@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './SmallCalendar.module.scss';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { useDateContext } from '../../../context/useDateContext';
+import { useDateContext } from '../../context/useDateContext';
 
 const months = [
   'January',
@@ -64,9 +64,7 @@ const SmallCalendar = () => {
           <li
             className={styles.inactive}
             onClick={() => {
-              const monday = new Date(year, month, day);
-              monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-              setCurrentDate(monday);
+              setCurrentDate(new Date(year, month, day));
             }}
             key={Math.random()}>
             {day}
@@ -84,9 +82,7 @@ const SmallCalendar = () => {
           <li
             className={styles.inactive}
             onClick={() => {
-              const monday = new Date(year, month, day);
-              monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-              setCurrentDate(monday);
+              setCurrentDate(new Date(year, month, day));
             }}
             key={Math.random()}>
             {day}
@@ -97,31 +93,18 @@ const SmallCalendar = () => {
     }
 
     for (let i = 1; i <= lastDateOfMonth; i++) {
-      const isThisMonday =
+      const isToday =
         i === currentDate.getDate() &&
         currentMonth === currentDate.getMonth() &&
-        currentYear === currentDate.getFullYear();
-
-      const isThisWeek =
-        i >= currentDate.getDate() &&
-        i <= currentDate.getDate() + 6 &&
-        currentMonth === currentDate.getMonth() &&
-        currentYear === currentDate.getFullYear();
-
-      let nameOfClass = '';
-      if (isThisMonday) {
-        nameOfClass = 'first';
-      } else if (isThisWeek) {
-        nameOfClass = 'active';
-      }
+        currentYear === currentDate.getFullYear()
+          ? 'active'
+          : '';
 
       const liEl = (
         <li
-          className={styles[nameOfClass]}
+          className={styles[isToday]}
           onClick={() => {
-            const monday = new Date(currentYear, currentMonth, i);
-            monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-            setCurrentDate(monday);
+            setCurrentDate(new Date(currentYear, currentMonth, i));
           }}
           key={Math.random()}>
           {i}
@@ -143,9 +126,7 @@ const SmallCalendar = () => {
         <li
           className={styles.inactive}
           onClick={() => {
-            const monday = new Date(year, month, day);
-            monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-            setCurrentDate(monday);
+            setCurrentDate(new Date(year, month, day));
           }}
           key={Math.random()}>
           {day}

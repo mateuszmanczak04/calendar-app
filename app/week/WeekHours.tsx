@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styles from './WeekHours.module.scss';
-import OnlyHours from '../../(components)/OnlyHours';
-import EventsDay from '../../(components)/EventsDay';
-import { useDateContext } from '../../../context/useDateContext';
+import EventsDay from './EventsDay';
+import { useDateContext } from '../../context/useDateContext';
+import OnlyHours from './OnlyHours';
 
 const AMOUNT = 7;
 
@@ -25,28 +25,35 @@ const WeekHours = () => {
       return;
     }
 
+    setTransition('0.4s ease');
     if (
-      currentDateMidnight.getTime() + 7 * 24 * 60 * 60 * 1000 !==
-        firstDateMidnight.getTime() &&
-      currentDateMidnight.getTime() - 7 * 24 * 60 * 60 * 1000 !==
+      // 7 days move
+      currentDateMidnight.getTime() + 7 * 24 * 60 * 60 * 1000 ===
+        firstDateMidnight.getTime() ||
+      currentDateMidnight.getTime() - 7 * 24 * 60 * 60 * 1000 ===
         firstDateMidnight.getTime()
     ) {
-      setTransition('0s');
-      setFirstDate(currentDate);
-      setOrders([
-        -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-        13,
-      ]);
-      return;
-    }
-
-    setTransition('0.4s ease');
-    if (firstDateMidnight > currentDateMidnight) {
-      // go back
-      setOrders((prevOrders) => prevOrders.map((o) => o + 7));
-    } else if (firstDateMidnight < currentDateMidnight) {
-      // go forward
-      setOrders((prevOrders) => prevOrders.map((o) => o - 7));
+      if (firstDateMidnight > currentDateMidnight) {
+        // go back
+        setOrders((prevOrders) => prevOrders.map((o) => o + 7));
+      } else if (firstDateMidnight < currentDateMidnight) {
+        // go forward
+        setOrders((prevOrders) => prevOrders.map((o) => o - 7));
+      }
+    } else if (
+      // 1 day move
+      currentDateMidnight.getTime() + 1 * 24 * 60 * 60 * 1000 ===
+        firstDateMidnight.getTime() ||
+      currentDateMidnight.getTime() - 1 * 24 * 60 * 60 * 1000 ===
+        firstDateMidnight.getTime()
+    ) {
+      if (firstDateMidnight > currentDateMidnight) {
+        // go back
+        setOrders((prevOrders) => prevOrders.map((o) => o + 1));
+      } else if (firstDateMidnight < currentDateMidnight) {
+        // go forward
+        setOrders((prevOrders) => prevOrders.map((o) => o - 1));
+      }
     }
 
     setTimeout(() => {
