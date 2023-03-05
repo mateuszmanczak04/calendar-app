@@ -139,7 +139,7 @@ const EventBlock = ({
   return (
     <>
       <div
-        className={styles.event}
+        className={styles.event + ' eventBlock'}
         style={{
           borderLeft: '2px solid ' + color,
           borderRight: '2px solid ' + color,

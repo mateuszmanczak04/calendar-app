@@ -6,8 +6,7 @@ import styles from './DateSwitcher.module.scss';
 
 const DateSwitcher = () => {
   const { handleZoomIn, handleZoomOut } = useLayoutContext();
-  const { currentDate, weekAhead, weekBack, getDateAfter, dayBack, dayAhead } =
-    useDateContext();
+  const { weekAhead, weekBack, dayBack, dayAhead } = useDateContext();
 
   const [switching, setSwitching] = useState<boolean>(false);
 

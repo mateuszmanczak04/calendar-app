@@ -33,6 +33,21 @@ export const LayoutContextProvider = ({ children }: Props) => {
   };
 
   const handleZoomOut = () => {
+    const eventBlocks = Array.from(
+      document.querySelectorAll(
+        '.eventBlock'
+      ) as unknown as HTMLCollectionOf<HTMLElement>
+    );
+    eventBlocks.forEach((eb) => {
+      eb.style.transition = '0.2s ease';
+    });
+
+    window.setTimeout(() => {
+      eventBlocks.forEach((eb) => {
+        eb.style.transition = '0';
+      });
+    }, 200);
+
     if (rowHeight > 32) {
       setRowHeight((prev) => prev - 8);
       localStorage.setItem('rowHeight', (rowHeight - 8).toString());
