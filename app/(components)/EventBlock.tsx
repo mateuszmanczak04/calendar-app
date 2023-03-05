@@ -7,7 +7,6 @@ import styles from './EventBlock.module.scss';
 import { BiMenu } from 'react-icons/bi';
 import EditEvent from './(editEvent)/EditEvent';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BsArrowsMove } from 'react-icons/bs';
 
 type Props = {
   yOffset: number;

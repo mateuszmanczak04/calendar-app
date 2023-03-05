@@ -6,8 +6,6 @@ import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Loading from '../../(components)/Loading';
-import { useDateContext } from '../../../context/useDateContext';
-import { getDateSlug } from '../../../lib/getDateSlug';
 
 const Login = () => {
   const [email, setEmail] = useState('');

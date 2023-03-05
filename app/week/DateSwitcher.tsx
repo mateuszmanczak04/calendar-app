@@ -3,7 +3,6 @@ import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { useDateContext } from '../../context/useDateContext';
 import { useLayoutContext } from '../../context/useLayoutContext';
 import styles from './DateSwitcher.module.scss';
-import moment from 'moment';
 
 const DateSwitcher = () => {
   const { handleZoomIn, handleZoomOut } = useLayoutContext();

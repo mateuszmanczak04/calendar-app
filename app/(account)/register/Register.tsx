@@ -6,8 +6,6 @@ import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Loading from '../../(components)/Loading';
-import { getDateSlug } from '../../../lib/getDateSlug';
-import { useDateContext } from '../../../context/useDateContext';
 
 const Register = () => {
   const [email, setEmail] = useState('');
