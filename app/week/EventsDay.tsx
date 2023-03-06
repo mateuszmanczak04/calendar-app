@@ -45,7 +45,8 @@ const EventsDay = ({ currentDate, order, amount, transition }: Props) => {
       className={styles.day}
       style={{
         width: `calc(100% / ${amount})`,
-        left: `calc(100% / ${amount} * ${order})`,
+        left: '0',
+        transform: `translateX(${order * 100}%)`,
         transition: transition,
       }}>
       <div className={styles.weekday}>
