@@ -219,24 +219,22 @@ const Month = () => {
             // one row with single week
             <div className={styles.row} key={index}>
               {week.map((day, i) => (
-                <div className={styles.day} key={i}>
+                <div
+                  className={styles.day}
+                  key={i}
+                  onClick={() => day && goToDay(day.day)}>
                   {/* day number in paragraph */}
-                  <p
-                    className={styles.number}
-                    onClick={() => day && goToDay(day.day)}>
-                    {day && day.day.getDate()}
-                  </p>
+                  <p className={styles.number}>{day && day.day.getDate()}</p>
                   {/* day events */}
-                  <div className={styles.events}>
-                    {day &&
-                      day.events.map((e) => (
-                        <p
-                          className={styles.event}
-                          key={e._id}
-                          style={{ background: e.color }}>
-                          {width >= 900 ? e.title : ''}
-                        </p>
-                      ))}
+                  <div className={styles.eventsContainer}>
+                    <div className={styles.events}>
+                      {day &&
+                        day.events.map((e) => (
+                          <p className={styles.event} key={e._id}>
+                            {width >= 900 ? e.title : ''}
+                          </p>
+                        ))}
+                    </div>
                   </div>
                 </div>
               ))}
