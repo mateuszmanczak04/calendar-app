@@ -9,6 +9,7 @@ import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import InsideLayout from './(components)/InsideLayout';
 import { LoadingContextProvider } from '../context/LoadingContext';
+import { EditContextProvider } from '../context/EditContext';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -26,7 +27,9 @@ export default function RootLayout({ children }: LayoutProps) {
             <EventsContextProvider>
               <LayoutContextProvider>
                 <DateContextProvider>
-                  <InsideLayout>{children}</InsideLayout>
+                  <EditContextProvider>
+                    <InsideLayout>{children}</InsideLayout>
+                  </EditContextProvider>
                 </DateContextProvider>
               </LayoutContextProvider>
             </EventsContextProvider>

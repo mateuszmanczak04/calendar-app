@@ -15,7 +15,7 @@ type Props = {
   endTime: number;
 };
 
-const EventMenu = ({ closeMenu, _id, title, startTime, endTime }: Props) => {
+const EditEvent = ({ closeMenu, _id, title, startTime, endTime }: Props) => {
   const { removeEvent, change, submitChanges } = useEventsContext();
   const [newTitle, setNewTitle] = useState(title);
   const [startDate, setStartDate] = useState(new Date(startTime));
@@ -117,4 +117,4 @@ const EventMenu = ({ closeMenu, _id, title, startTime, endTime }: Props) => {
   );
 };
 
-export default EventMenu;
+export default EditEvent;

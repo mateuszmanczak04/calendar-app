@@ -7,6 +7,7 @@ import styles from './EventBlock.module.scss';
 import { BiMenu } from 'react-icons/bi';
 import EditEvent from './(editEvent)/EditEvent';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEditContext } from '../../context/useEditContext';
 
 type Props = {
   yOffset: number;
@@ -38,7 +39,7 @@ const EventBlock = ({
   const [displayEnd, setDisplayEnd] = useState(true);
   const [displayStart, setDisplayStart] = useState(true);
   const { change, submitChanges } = useEventsContext();
-  const [editing, setEditing] = useState<boolean>(false);
+  const { setEvent: setEditEvent } = useEditContext();
 
   useEffect(() => {
     const tomorrow = new Date(currentDate);
@@ -156,7 +157,7 @@ const EventBlock = ({
             onMouseDown={handleMouseDownTop}></div>
         )}
         <p className={styles.title}>{title}</p>
-        <button onClick={() => setEditing(true)}>
+        <button onClick={() => setEditEvent(_id, title, startTime, endTime)}>
           <BiMenu />
         </button>
         {displayEnd && (
@@ -166,24 +167,6 @@ const EventBlock = ({
             onMouseDown={handleMouseDownBottom}></div>
         )}
       </div>
-      <AnimatePresence>
-        {editing && (
-          <motion.div
-            className={styles.eventMenu}
-            initial={{ x: '-100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
-            transition={{ duration: 0.5 }}>
-            <EditEvent
-              _id={_id}
-              title={title}
-              startTime={startTime}
-              endTime={endTime}
-              closeMenu={() => setEditing(false)}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 };

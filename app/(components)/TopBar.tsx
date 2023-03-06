@@ -5,14 +5,22 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useDateContext } from '../../context/useDateContext';
+import { useEditContext } from '../../context/useEditContext';
 import AddEvent from './(addEvent)/AddEvent';
+import EditEvent from './(editEvent)/EditEvent';
 import Loading from './Loading';
 import styles from './TopBar.module.scss';
 
 const TopBar = () => {
   const [isAddEventOpen, setIsAddEventOpen] = useState(false);
   const { data: session, status } = useSession();
-  const { currentDate } = useDateContext();
+  const {
+    _id,
+    title,
+    startTime,
+    endTime,
+    setEvent: setEditEvent,
+  } = useEditContext();
 
   if (status === 'loading') {
     return <Loading />;
@@ -45,6 +53,25 @@ const TopBar = () => {
             exit={{ x: '-100%' }}
             transition={{ duration: 0.5 }}>
             <AddEvent close={() => setIsAddEventOpen(false)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {_id && title && startTime && endTime && (
+          <motion.div
+            className={styles.eventMenu}
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ duration: 0.5 }}>
+            <EditEvent
+              _id={_id}
+              title={title}
+              startTime={startTime}
+              endTime={endTime}
+              closeMenu={() => setEditEvent('', '', 0, 0)}
+            />
           </motion.div>
         )}
       </AnimatePresence>
