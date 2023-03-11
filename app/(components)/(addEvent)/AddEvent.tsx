@@ -5,8 +5,9 @@ import { useEventsContext } from '../../../context/useEventsContext';
 import styles from './AddEvent.module.scss';
 import DateAndTimePicker from '../(date)/DateAndTimePicker';
 import { MdClose } from 'react-icons/md';
-import { useDateContext } from '../../../context/useDateContext';
 import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
+import { getCurrentDate } from '../../../redux/date';
 
 const AddEvent = ({ close }: { close: () => void }) => {
   const [title, setTitle] = useState<string>('');
@@ -14,7 +15,10 @@ const AddEvent = ({ close }: { close: () => void }) => {
   const [endTime, setEndTime] = useState<Date>(new Date());
   const [color, setColor] = useState('#AB0A8D');
   const { addEvent } = useEventsContext();
-  const { currentDate: currentDateFromContext } = useDateContext();
+
+  // redux
+  const currentDateFromContext = useSelector(getCurrentDate);
+
   const [currentDate, setCurrentDate] = useState<Date>(currentDateFromContext);
   const { data: session } = useSession();
 

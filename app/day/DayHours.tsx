@@ -4,10 +4,12 @@ import React, { useEffect, useState } from 'react';
 import styles from './DayHours.module.scss';
 import OnlyHours from './OnlyHours';
 import EventsDay from './EventsDay';
-import { useDateContext } from '../../context/useDateContext';
+import { useSelector } from 'react-redux';
+import { getCurrentDate, getDateAfter, getDateBefore } from '../../redux/date';
 
 const DayHours = () => {
-  const { currentDate, getDateBefore, getDateAfter } = useDateContext();
+  const currentDate = useSelector(getCurrentDate);
+
   const [firstDate, setFirstDate] = useState(currentDate);
   const [orders, setOrders] = useState([-1, 0, 1]);
   const [transition, setTransition] = useState('0.4s ease');

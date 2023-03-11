@@ -3,7 +3,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './SmallCalendar.module.scss';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { useDateContext } from '../../context/useDateContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentDate, setCurrentDate } from '../../redux/date';
 
 const months = [
   'January',
@@ -22,7 +23,10 @@ const months = [
 
 const SmallCalendar = () => {
   const [days, setDays] = useState<JSX.Element[]>([]);
-  const { currentDate, setCurrentDate } = useDateContext();
+
+  // redux
+  const currentDate = useSelector(getCurrentDate);
+  const dispatch = useDispatch();
 
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()
@@ -64,7 +68,7 @@ const SmallCalendar = () => {
           <li
             className={styles.inactive}
             onClick={() => {
-              setCurrentDate(new Date(year, month, day));
+              dispatch(setCurrentDate({ date: new Date(year, month, day) }));
             }}
             key={Math.random()}>
             {day}
@@ -104,7 +108,9 @@ const SmallCalendar = () => {
         <li
           className={styles[isToday]}
           onClick={() => {
-            setCurrentDate(new Date(currentYear, currentMonth, i));
+            dispatch(
+              setCurrentDate({ date: new Date(currentYear, currentMonth, i) })
+            );
           }}
           key={Math.random()}>
           {i}
@@ -126,7 +132,7 @@ const SmallCalendar = () => {
         <li
           className={styles.inactive}
           onClick={() => {
-            setCurrentDate(new Date(year, month, day));
+            dispatch(setCurrentDate({ date: new Date(year, month, day) }));
           }}
           key={Math.random()}>
           {day}
@@ -134,7 +140,7 @@ const SmallCalendar = () => {
       );
       setDays((prev) => [...prev, liEl]);
     }
-  }, [currentMonth, currentYear, currentDate, setCurrentDate]);
+  }, [currentMonth, currentYear, currentDate, dispatch]);
 
   useEffect(() => {
     setCurrentMonth(currentDate.getMonth());

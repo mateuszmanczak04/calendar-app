@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styles from './WeekHours.module.scss';
 import EventsDay from './EventsDay';
-import { useDateContext } from '../../context/useDateContext';
 import OnlyHours from './OnlyHours';
+import { useSelector, useStore } from 'react-redux';
+import { getCurrentDate, getDateBefore, getDateAfter } from '../../redux/date';
 
 const AMOUNT = 7;
 
 const WeekHours = () => {
-  const { currentDate, getDateBefore, getDateAfter } = useDateContext();
+  const currentDate = useSelector(getCurrentDate);
+
   const [firstDate, setFirstDate] = useState(currentDate);
   const [orders, setOrders] = useState([
     -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,

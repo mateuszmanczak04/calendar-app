@@ -7,15 +7,18 @@ import {
   AiOutlineMinus,
   AiOutlinePlus,
 } from 'react-icons/ai';
-import { useDateContext } from '../../context/useDateContext';
 import { useLayoutContext } from '../../context/useLayoutContext';
 import styles from './DateSwitcher.module.scss';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentDate, goDayAhead, goDayBack } from '../../redux/date';
 
 const RightLeft = () => {
   const { handleZoomIn, handleZoomOut } = useLayoutContext();
-  const { currentDate, dayBack, dayAhead, getDateBefore, getDateAfter } =
-    useDateContext();
+
+  // redux
+  const dispatch = useDispatch();
+  const currentDate = useSelector(getCurrentDate);
 
   const [switching, setSwitching] = useState<boolean>(false);
 
@@ -29,7 +32,7 @@ const RightLeft = () => {
           if (switching) {
             return;
           }
-          dayBack();
+          dispatch(goDayBack({}));
           setSwitching(true);
           setTimeout(() => {
             setSwitching(false);
@@ -43,7 +46,7 @@ const RightLeft = () => {
           if (switching) {
             return;
           }
-          dayAhead();
+          dispatch(goDayAhead({}));
           setSwitching(true);
           setTimeout(() => {
             setSwitching(false);

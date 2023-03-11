@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { useDateContext } from '../../context/useDateContext';
 import { useEditContext } from '../../context/useEditContext';
 import AddEvent from './(addEvent)/AddEvent';
 import EditEvent from './(editEvent)/EditEvent';
