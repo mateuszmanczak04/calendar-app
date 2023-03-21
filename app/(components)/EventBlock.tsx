@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useEventsContext } from '../../context/useEventsContext';
-import { useLayoutContext } from '../../context/useLayoutContext';
 import styles from './EventBlock.module.scss';
 import { BiMenu } from 'react-icons/bi';
-import EditEvent from './(editEvent)/EditEvent';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEditContext } from '../../context/useEditContext';
+import { setEditedEvent } from '../../redux/edit';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { updateEvent } from '../../redux/events';
+import { getRowHeight } from '../../redux/layout';
 
 type Props = {
   yOffset: number;
@@ -33,13 +32,14 @@ const EventBlock = ({
   const [height, setHeight] = useState(initialHeight);
   const ref = useRef<HTMLDivElement>(null);
   const [yOffset, setYOffset] = useState(initialYOffset);
-  const { rowHeight } = useLayoutContext();
   const [movingTop, setMovingTop] = useState<boolean>(false);
   const [movingBottom, setMovingBottom] = useState<boolean>(false);
   const [displayEnd, setDisplayEnd] = useState(true);
   const [displayStart, setDisplayStart] = useState(true);
-  const { change, submitChanges } = useEventsContext();
-  const { setEvent: setEditEvent } = useEditContext();
+
+  // redux
+  const dispatch = useAppDispatch();
+  const rowHeight = useAppSelector(getRowHeight);
 
   useEffect(() => {
     const tomorrow = new Date(currentDate);
@@ -110,8 +110,14 @@ const EventBlock = ({
         );
       }
 
-      change(_id, title, startDate, endDate);
-      submitChanges(_id, title, startDate, endDate);
+      dispatch(
+        updateEvent({
+          _id,
+          title,
+          startTime: startDate.getTime(),
+          endTime: endDate.getTime(),
+        })
+      );
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -123,8 +129,6 @@ const EventBlock = ({
     };
   }, [
     _id,
-    change,
-    submitChanges,
     title,
     startTime,
     endTime,
@@ -135,6 +139,7 @@ const EventBlock = ({
     movingTop,
     movingBottom,
     rowHeight,
+    dispatch,
   ]);
 
   return (
@@ -157,7 +162,10 @@ const EventBlock = ({
             onMouseDown={handleMouseDownTop}></div>
         )}
         <p className={styles.title}>{title}</p>
-        <button onClick={() => setEditEvent(_id, title, startTime, endTime)}>
+        <button
+          onClick={() =>
+            dispatch(setEditedEvent({ _id, title, startTime, endTime }))
+          }>
           <BiMenu />
         </button>
         {displayEnd && (

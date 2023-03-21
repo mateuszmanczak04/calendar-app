@@ -1,16 +1,18 @@
 import React from 'react';
-import { useEventsContext } from '../../context/useEventsContext';
-import { useLayoutContext } from '../../context/useLayoutContext';
 import EventBlock from '../(components)/EventBlock';
 import styles from './Events.module.scss';
+import { useAppSelector } from '../../redux/store';
+import { getRowHeight } from '../../redux/layout';
+import { getAllUserEvents } from '../../redux/events';
 
 type Props = {
   currentDate: Date;
 };
 
 const Events = ({ currentDate }: Props) => {
-  const { events } = useEventsContext();
-  const { rowHeight } = useLayoutContext();
+  // redux
+  const rowHeight = useAppSelector(getRowHeight);
+  const events = useAppSelector(getAllUserEvents);
 
   return (
     <div className={styles.events}>

@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react';
 import styles from './DayHours.module.scss';
 import OnlyHours from './OnlyHours';
 import EventsDay from './EventsDay';
-import { useSelector } from 'react-redux';
-import { getCurrentDate, getDateAfter, getDateBefore } from '../../redux/date';
+import { getCurrentDate } from '../../redux/date';
+import { useAppSelector } from '../../redux/store';
+import { getDateAfter, getDateBefore } from '../../lib/date';
 
 const DayHours = () => {
-  const currentDate = useSelector(getCurrentDate);
+  const currentDate = useAppSelector(getCurrentDate);
 
   const [firstDate, setFirstDate] = useState(currentDate);
   const [orders, setOrders] = useState([-1, 0, 1]);
@@ -18,6 +19,7 @@ const DayHours = () => {
     const currentDateMidnight = new Date(currentDate);
     currentDateMidnight.setHours(0, 0, 0, 0);
 
+    // date of first displayed day column
     const firstDateMidnight = new Date(firstDate);
     firstDateMidnight.setHours(0, 0, 0, 0);
 
@@ -25,6 +27,7 @@ const DayHours = () => {
       return;
     }
 
+    // if changed different amount of time than exactly 1 day
     if (
       currentDateMidnight.getTime() + 24 * 60 * 60 * 1000 !==
         firstDateMidnight.getTime() &&

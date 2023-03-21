@@ -3,9 +3,6 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { useEventsContext } from '../../context/useEventsContext';
 import useWindowWidth from '../../hooks/useWindowWidth';
 import {
   getCurrentDate,
@@ -13,6 +10,8 @@ import {
   goMonthBack,
   setCurrentDate,
 } from '../../redux/date';
+import { getAllUserEvents } from '../../redux/events';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import styles from './Month.module.scss';
 
 const monthNames = [
@@ -50,8 +49,9 @@ let weekdays = [
 
 const Month = () => {
   // redux
-  const currentDate = useSelector(getCurrentDate);
-  const dispatch = useDispatch();
+  const currentDate = useAppSelector(getCurrentDate);
+  const dispatch = useAppDispatch();
+  const events = useAppSelector(getAllUserEvents);
 
   const router = useRouter();
   const [weeks, setWeeks] = useState<
@@ -60,7 +60,7 @@ const Month = () => {
       events: Event[];
     } | null)[][]
   >([]);
-  const { events } = useEventsContext();
+
   const width = useWindowWidth();
 
   useEffect(() => {
@@ -205,10 +205,10 @@ const Month = () => {
           {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
         </h1>
         <div className={styles.buttons}>
-          <button onClick={() => dispatch(goMonthBack({}))}>
+          <button onClick={() => dispatch(goMonthBack())}>
             <AiOutlineLeft />
           </button>
-          <button onClick={() => dispatch(goMonthAhead({}))}>
+          <button onClick={() => dispatch(goMonthAhead())}>
             <AiOutlineRight />
           </button>
         </div>

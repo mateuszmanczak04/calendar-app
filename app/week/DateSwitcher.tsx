@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLayoutContext } from '../../context/useLayoutContext';
 import {
   goDayAhead,
   goDayBack,
   goWeekAhead,
   goWeekBack,
 } from '../../redux/date';
+import { zoomIn, zoomOut } from '../../redux/layout';
+import { useAppDispatch } from '../../redux/store';
 import styles from './DateSwitcher.module.scss';
 
 const DateSwitcher = () => {
-  const { handleZoomIn, handleZoomOut } = useLayoutContext();
-
   // redux
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // it's needed to block switching date before animation ends
   const [switching, setSwitching] = useState<boolean>(false);
 
   return (
     <div className={styles.menu}>
-      <button onClick={handleZoomOut}>
+      <button onClick={() => dispatch(zoomOut())}>
         <AiOutlineMinus />
       </button>
       <button
@@ -29,7 +27,7 @@ const DateSwitcher = () => {
           if (switching) {
             return;
           }
-          dispatch(goWeekBack({}));
+          dispatch(goWeekBack());
           setSwitching(true);
           setTimeout(() => {
             setSwitching(false);
@@ -42,7 +40,7 @@ const DateSwitcher = () => {
           if (switching) {
             return;
           }
-          dispatch(goDayBack({}));
+          dispatch(goDayBack());
           setSwitching(true);
           setTimeout(() => {
             setSwitching(false);
@@ -55,7 +53,7 @@ const DateSwitcher = () => {
           if (switching) {
             return;
           }
-          dispatch(goDayAhead({}));
+          dispatch(goDayAhead());
           setSwitching(true);
           setTimeout(() => {
             setSwitching(false);
@@ -68,7 +66,7 @@ const DateSwitcher = () => {
           if (switching) {
             return;
           }
-          dispatch(goWeekAhead({}));
+          dispatch(goWeekAhead());
           setSwitching(true);
           setTimeout(() => {
             setSwitching(false);
@@ -76,7 +74,7 @@ const DateSwitcher = () => {
         }}>
         +7
       </button>
-      <button onClick={handleZoomIn}>
+      <button onClick={() => dispatch(zoomIn())}>
         <AiOutlinePlus />
       </button>
     </div>

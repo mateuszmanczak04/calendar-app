@@ -1,19 +1,19 @@
 'use client';
 
 import React from 'react';
-import { EventsContextProvider } from '../context/EventsContext';
-import { LayoutContextProvider } from '../context/LayoutContext';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import InsideLayout from './(components)/InsideLayout';
-import { LoadingContextProvider } from '../context/LoadingContext';
-import { EditContextProvider } from '../context/EditContext';
 import { Provider } from 'react-redux';
-import store from '../redux/configureStore';
+import store from '../redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 
 type LayoutProps = {
   children: React.ReactNode;
 };
+
+let persistor = persistStore(store);
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
@@ -23,17 +23,11 @@ export default function RootLayout({ children }: LayoutProps) {
       </head>
       <body>
         <Provider store={store}>
-          <SessionProvider>
-            <LoadingContextProvider>
-              <EventsContextProvider>
-                <LayoutContextProvider>
-                  <EditContextProvider>
-                    <InsideLayout>{children}</InsideLayout>
-                  </EditContextProvider>
-                </LayoutContextProvider>
-              </EventsContextProvider>
-            </LoadingContextProvider>
-          </SessionProvider>
+          <PersistGate persistor={persistor}>
+            <SessionProvider>
+              <InsideLayout>{children}</InsideLayout>
+            </SessionProvider>
+          </PersistGate>
         </Provider>
       </body>
     </html>

@@ -1,9 +1,11 @@
 import React from 'react';
-import { useLayoutContext } from '../../context/useLayoutContext';
+import { getRowHeight } from '../../redux/layout';
+import { useAppSelector } from '../../redux/store';
 import styles from './OnlyHours.module.scss';
 
 const OnlyHours = () => {
-  const { rowHeight } = useLayoutContext();
+  // redux
+  const rowHeight = useAppSelector(getRowHeight);
 
   return (
     <div className={styles.container} style={{ height: 24 * rowHeight }}>

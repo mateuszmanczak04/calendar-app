@@ -7,16 +7,16 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    if (req.method !== 'POST') {
+    if (req.method !== 'PUT') {
       return res.status(400).json({ message: 'Invalid method' });
     }
 
     const {
       _id,
       title,
-      startDate,
-      endDate,
-    }: { _id: string; title: string; startDate: Date; endDate: Date } =
+      startTime,
+      endTime,
+    }: { _id: string; title: string; startTime: number; endTime: number } =
       req.body;
 
     await dbConnect();
@@ -30,9 +30,9 @@ export default async function handler(
 
     await Event.findByIdAndUpdate(_id, {
       $set: {
-        title: title,
-        startTime: new Date(startDate).getTime(),
-        endTime: new Date(endDate).getTime(),
+        title,
+        startTime,
+        endTime,
       },
     });
 

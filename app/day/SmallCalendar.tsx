@@ -3,8 +3,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './SmallCalendar.module.scss';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentDate, setCurrentDate } from '../../redux/date';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 
 const months = [
   'January',
@@ -25,8 +25,8 @@ const SmallCalendar = () => {
   const [days, setDays] = useState<JSX.Element[]>([]);
 
   // redux
-  const currentDate = useSelector(getCurrentDate);
-  const dispatch = useDispatch();
+  const currentDate = useAppSelector(getCurrentDate);
+  const dispatch = useAppDispatch();
 
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styles from './WeekHours.module.scss';
 import EventsDay from './EventsDay';
 import OnlyHours from './OnlyHours';
-import { useSelector, useStore } from 'react-redux';
-import { getCurrentDate, getDateBefore, getDateAfter } from '../../redux/date';
+import { getCurrentDate } from '../../redux/date';
+import { useAppSelector } from '../../redux/store';
+import { getDateAfter, getDateBefore } from '../../lib/date';
 
 const AMOUNT = 7;
 
 const WeekHours = () => {
-  const currentDate = useSelector(getCurrentDate);
+  // redux
+  const currentDate = useAppSelector(getCurrentDate);
 
   const [firstDate, setFirstDate] = useState(currentDate);
   const [orders, setOrders] = useState([
@@ -20,10 +22,31 @@ const WeekHours = () => {
     const currentDateMidnight = new Date(currentDate);
     currentDateMidnight.setHours(0, 0, 0, 0);
 
+    // date of first displayed day column
     const firstDateMidnight = new Date(firstDate);
     firstDateMidnight.setHours(0, 0, 0, 0);
 
     if (currentDateMidnight.getTime() === firstDateMidnight.getTime()) {
+      return;
+    }
+
+    // if changed different amount of time than exactly 1 day or 7 days (!TODO temporary for laziness for catching date zone change)
+    if (
+      currentDateMidnight.getTime() + 24 * 60 * 60 * 1000 !==
+        firstDateMidnight.getTime() &&
+      currentDateMidnight.getTime() - 24 * 60 * 60 * 1000 !==
+        firstDateMidnight.getTime() &&
+      currentDateMidnight.getTime() + 7 * 24 * 60 * 60 * 1000 !==
+        firstDateMidnight.getTime() &&
+      currentDateMidnight.getTime() - 7 * 24 * 60 * 60 * 1000 !==
+        firstDateMidnight.getTime()
+    ) {
+      setTransition('0s');
+      setFirstDate(currentDate);
+      setOrders([
+        -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+        13,
+      ]);
       return;
     }
 

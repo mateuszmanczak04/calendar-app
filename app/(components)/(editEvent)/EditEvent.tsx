@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { MdClose } from 'react-icons/md';
-import { useEventsContext } from '../../../context/useEventsContext';
 import DateAndTimePicker from '../(date)/DateAndTimePicker';
 import styles from './EditEvent.module.scss';
 import { AiFillDelete } from 'react-icons/ai';
 import { AnimatePresence, motion } from 'framer-motion';
 import DeleteModal from './DeleteModal';
+import { useAppDispatch } from '../../../redux/store';
+import { removeEvent, updateEvent } from '../../../redux/events';
 
 type Props = {
   closeMenu: () => void;
@@ -16,21 +17,29 @@ type Props = {
 };
 
 const EditEvent = ({ closeMenu, _id, title, startTime, endTime }: Props) => {
-  const { removeEvent, change, submitChanges } = useEventsContext();
   const [newTitle, setNewTitle] = useState(title);
   const [startDate, setStartDate] = useState(new Date(startTime));
   const [endDate, setEndDate] = useState(new Date(endTime));
   const [canSave, setCanSave] = useState<boolean>(true);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
+  // redux
+  const dispatch = useAppDispatch();
+
   const handleRemove = () => {
-    removeEvent(_id);
+    dispatch(removeEvent(_id));
     closeMenu();
   };
 
   const handleSave = () => {
-    change(_id, newTitle, startDate, endDate);
-    submitChanges(_id, newTitle, startDate, endDate);
+    dispatch(
+      updateEvent({
+        _id,
+        title: newTitle,
+        startTime: startDate.getTime(),
+        endTime: endDate.getTime(),
+      })
+    );
     closeMenu();
   };
 

@@ -1,23 +1,23 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { useEventsContext } from '../../../context/useEventsContext';
 import styles from './AddEvent.module.scss';
 import DateAndTimePicker from '../(date)/DateAndTimePicker';
 import { MdClose } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
-import { useSelector } from 'react-redux';
 import { getCurrentDate } from '../../../redux/date';
+import { addEvent } from '../../../redux/events';
+import { useAppDispatch, useAppSelector } from '../../../redux/store';
 
 const AddEvent = ({ close }: { close: () => void }) => {
   const [title, setTitle] = useState<string>('');
   const [startTime, setStartTime] = useState<Date>(new Date());
   const [endTime, setEndTime] = useState<Date>(new Date());
   const [color, setColor] = useState('#AB0A8D');
-  const { addEvent } = useEventsContext();
 
   // redux
-  const currentDateFromContext = useSelector(getCurrentDate);
+  const currentDateFromContext = useAppSelector(getCurrentDate);
+  const dispatch = useAppDispatch();
 
   const [currentDate, setCurrentDate] = useState<Date>(currentDateFromContext);
   const { data: session } = useSession();
@@ -37,14 +37,16 @@ const AddEvent = ({ close }: { close: () => void }) => {
     const endTimeNumber = endTime.getTime() - (endTime.getTime() % 300000);
 
     if (session && session.user && session.user.email) {
-      addEvent({
-        _id: Math.random().toString(),
-        title,
-        startTime: startTimeNumber,
-        endTime: endTimeNumber,
-        color,
-        authorEmail: session.user.email,
-      });
+      dispatch(
+        addEvent({
+          _id: Math.random().toString(),
+          title,
+          startTime: startTimeNumber,
+          endTime: endTimeNumber,
+          color,
+          authorEmail: session.user.email,
+        })
+      );
     }
     close();
   };

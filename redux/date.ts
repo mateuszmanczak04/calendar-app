@@ -3,68 +3,49 @@ import { createSlice } from '@reduxjs/toolkit';
 const dateSlice = createSlice({
   name: 'date',
   initialState: {
-    currentDate: new Date(localStorage.currentDate) || new Date(),
+    currentDate: new Date().toString(),
   },
   reducers: {
     setCurrentDate: (state, action) => {
       localStorage.currentDate = action.payload.date.toString();
-      return {
-        ...state,
-        currentDate: action.payload.date,
-      };
+      state.currentDate = action.payload.date.toString();
     },
-    goDayAhead: (state, action) => {
+    goDayAhead: (state) => {
       const newDate = new Date(state.currentDate);
       newDate.setDate(newDate.getDate() + 1);
-      localStorage.currentDate = newDate.toString();
-      return { ...state, currentDate: newDate };
+      state.currentDate = newDate.toString();
     },
-    goDayBack: (state, action) => {
+    goDayBack: (state) => {
       const newDate = new Date(state.currentDate);
       newDate.setDate(newDate.getDate() - 1);
-      localStorage.currentDate = newDate.toString();
-      return { ...state, currentDate: newDate };
+      state.currentDate = newDate.toString();
     },
-    goWeekAhead: (state, action) => {
+    goWeekAhead: (state) => {
       const newDate = new Date(state.currentDate);
       newDate.setDate(newDate.getDate() + 7);
-      localStorage.currentDate = newDate.toString();
-      return { ...state, currentDate: newDate };
+      state.currentDate = newDate.toString();
     },
-    goWeekBack: (state, action) => {
+    goWeekBack: (state) => {
       const newDate = new Date(state.currentDate);
       newDate.setDate(newDate.getDate() - 7);
-      localStorage.currentDate = newDate.toString();
-      return { ...state, currentDate: newDate };
+      state.currentDate = newDate.toString();
     },
-    goMonthAhead: (state, action) => {
+    goMonthAhead: (state) => {
       const newDate = new Date(state.currentDate);
       newDate.setMonth(newDate.getMonth() + 1);
-      localStorage.currentDate = newDate.toString();
-      return { ...state, currentDate: newDate };
+      state.currentDate = newDate.toString();
     },
-    goMonthBack: (state, action) => {
+    goMonthBack: (state) => {
       const newDate = new Date(state.currentDate);
       newDate.setMonth(newDate.getMonth() - 1);
-      localStorage.currentDate = newDate.toString();
-      return { ...state, currentDate: newDate };
+      state.currentDate = newDate.toString();
     },
   },
 });
 
-export const getCurrentDate = (state: { date: { currentDate: Date } }): Date =>
-  state.date.currentDate;
-
-export const getDateAfter = (date: Date, amountOfDays: number) => {
-  const newDate = new Date(date);
-  newDate.setDate(newDate.getDate() + amountOfDays);
-  return newDate;
-};
-export const getDateBefore = (date: Date, amountOfDays: number) => {
-  const newDate = new Date(date);
-  newDate.setDate(newDate.getDate() - amountOfDays);
-  return newDate;
-};
+export const getCurrentDate = (state: {
+  date: { currentDate: string };
+}): Date => new Date(state.date.currentDate);
 
 export const {
   setCurrentDate,
